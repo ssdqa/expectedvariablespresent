@@ -1,0 +1,26 @@
+Package: expectedvariablespresent
+Title: Expected Variables Present
+Version: 0.0.0.9000
+Authors@R: 
+    person("Kaleigh", "Wieand", ,"wieandk@chop.edu", role = c("aut", "cre"))
+Description: This package represents one of several modules in the broader SSDQA ecosystem. The Expected Variables Present module measures the presence of user-defined study variables within the source data.
+License: Artistic-2.0
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.1
+Imports: 
+    argos,
+    cli (>= 3.6.3),
+    dplyr (>= 1.1.4),
+    ggiraph (>= 0.8.9),
+    ggplot2 (>= 3.5.0),
+    magrittr,
+    plotly (>= 4.10.4),
+    purrr (>= 1.0.2),
+    qicharts2 (>= 0.7.4),
+    rlang (>= 1.1.4),
+    ssdqa.gen,
+    stringr (>= 1.5.1),
+    tidyr (>= 1.3.1),
+    timetk (>= 2.9.0)
+Remotes: PEDSnet/argos, ssdqa/ssdqa.gen
