@@ -47,7 +47,7 @@
 #' @export
 #'
 evp_process_pcornet <- function(cohort,
-                                evp_variable_file = read_codeset('evp_variables', 'cccc'),
+                                evp_variable_file = expectedvariablespresent::evp_variable_file,
                                 multi_or_single_site = 'single',
                                 anomaly_or_exploratory='exploratory',
                                 output_level = 'row',
@@ -59,8 +59,8 @@ evp_process_pcornet <- function(cohort,
 ){
 
   ## parameter summary output
-  output_type <- suppressWarnings(param_csv_summ2(check_string = 'evp',
-                                                  as.list(environment())))
+  # output_type <- suppressWarnings(param_csv_summ2(check_string = 'evp',
+  #                                                 as.list(environment())))
 
 
   # Add site check
@@ -176,14 +176,13 @@ evp_process_pcornet <- function(cohort,
     file_name <- paste0(output_type, '_', config('qry_site'))
   }
 
-  evp_tbl_final %>%
-    replace_site_col_pcnt() %>%
-    output_tbl(file_name, file = TRUE)
+  # evp_tbl_final %>%
+  #   replace_site_col_pcnt() %>%
+  #   output_tbl(file_name, file = TRUE)
 
   return(evp_tbl_final %>% replace_site_col_pcnt())
 
   message(str_wrap(paste0('Based on your chosen parameters, we recommend using the following
-                       output function in evp_output: ', output_type, '. This is also included
-                       in the parameter_summary.csv file output to the results directory.')))
+                       output function in evp_output: ', output_type, '.')))
 }
 

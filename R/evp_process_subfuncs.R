@@ -16,6 +16,8 @@
 #'
 #' @import argos
 #' @import dplyr
+#' @importFrom purrr set_names
+#' @importFrom purrr reduce
 #'
 compute_evp <- function(cohort,
                         grouped_list,
@@ -99,7 +101,6 @@ compute_evp <- function(cohort,
 #' @return one dataframe with the jaccard similarity index for each concept group provided
 #'         in the concept file
 #'
-#' @importFrom purrr reduce
 #'
 compute_evp_ssanom <- function(cohort,
                                grouped_list,

@@ -6,7 +6,7 @@
 \usage{
 evp_process(
   cohort,
-  evp_variable_file = read_codeset("evp_variables", "cccc"),
+  evp_variable_file = expectedvariablespresent::evp_variable_file,
   multi_or_single_site = "single",
   anomaly_or_exploratory = "exploratory",
   output_level = "row",
