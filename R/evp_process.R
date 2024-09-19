@@ -176,8 +176,8 @@ evp_process <- function(cohort,
   #   replace_site_col() %>%
   #   output_tbl('evp_process_results', file = TRUE)
 
-  return(evp_tbl_final %>% replace_site_col())
-
-  message(str_wrap(paste0('Based on your chosen parameters, we recommend using the following
+  cli::cli_inform(str_wrap(paste0('Based on your chosen parameters, we recommend using the following
                        output function in evp_output: ', output_type, '.')))
+
+  return(evp_tbl_final %>% replace_site_col())
 }
