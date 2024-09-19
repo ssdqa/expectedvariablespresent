@@ -281,7 +281,8 @@ evp_ms_exp_at <- function(process_output,
 
   facet <- facet %>% append('variable') %>% unique()
 
-  time_inc <- process_output %>% filter(!is.na(time_increment)) %>% distinct(time_increment) %>% pull()
+  time_inc <- process_output %>% ungroup() %>% filter(!is.na(time_increment)) %>%
+    distinct(time_increment) %>% pull()
 
   if(time_inc == 'year' && length(filter_variable) > 3){cli::cli_abort('Please choose up to 3 variables for this output type')
     }else if(time_inc != 'year' && length(filter_variable) > 1){cli::cli_abort('Please choose 1 variable for this output type')}
