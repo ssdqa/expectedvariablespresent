@@ -9,7 +9,6 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
 Imports: 
-    argos,
     cli (>= 3.6.3),
     dplyr (>= 1.1.4),
     ggiraph (>= 0.8.9),
@@ -25,5 +24,9 @@ Imports:
     timetk (>= 2.9.0)
 Remotes: PEDSnet/argos, ssdqa/ssdqa.gen
 Depends: 
+    argos,
     R (>= 2.10)
 LazyData: true
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
