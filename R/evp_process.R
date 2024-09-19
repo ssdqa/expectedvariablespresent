@@ -62,8 +62,8 @@ evp_process <- function(cohort,
 ){
 
   ## parameter summary output
-  # output_type <- suppressWarnings(param_csv_summ2(check_string = 'evp',
-  #                                                 as.list(environment())))
+  output_type <- suppressWarnings(param_summ(check_string = 'evp',
+                                             as.list(environment())))
 
 
   # Add site check
