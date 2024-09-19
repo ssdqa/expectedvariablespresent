@@ -348,7 +348,7 @@ evp_ss_anom_at <- function(process_output,
       rename('ycol' = ct,
              'denom' = denom)
 
-    pp_qi <-  qic(data = final, x = time_start, y = ycol, chart = 'pp', facets = facet_col,
+    pp_qi <-  qic(data = final, x = time_start, y = ycol, chart = 'pp', facets = ~facet_col,
         title = paste0('Control Chart: Proportion of ', title, ' per Variable'),
         ylab = 'Proportion', xlab = 'Time',
         show.grid = TRUE, n = denom)
