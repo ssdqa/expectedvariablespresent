@@ -27,7 +27,9 @@ parameter in the \code{evp_process} function. The user should recreate this file
 structure and include their own variables.
 }
 \details{
-Please note that the codesets should be stored in a subdirectory called "specs".
+Please note that the codesets should be stored in the \code{file_subdirectory} established
+when \code{ssdqa.gen::initialize_dq_session} is executed.
+
 Examples of appropriately structured codeset files are attached to the ssdqa.gen
 package and can be accessed with \verb{ssdqa.gen::}
 }

@@ -5,7 +5,9 @@
 #' parameter in the `evp_process` function. The user should recreate this file
 #' structure and include their own variables.
 #'
-#' Please note that the codesets should be stored in a subdirectory called "specs".
+#' Please note that the codesets should be stored in the `file_subdirectory` established
+#' when `ssdqa.gen::initialize_dq_session` is executed.
+#'
 #' Examples of appropriately structured codeset files are attached to the ssdqa.gen
 #' package and can be accessed with `ssdqa.gen::`
 #'
