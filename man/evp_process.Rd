@@ -28,10 +28,12 @@ evp_process(
 examined in the function. contains the following columns:
 - @variable a label for the variable captured by the associated codeset
 - @default_tbl CDM table where data related to the codeset is found
-- @field_name concept_id field with codes from the associated codeset
+- @concept_field concept_id field with codes from the associated codeset
 - @date_field a date field in the \code{default_tbl} that should be used for
 over time analyses
-- @codeset_name the name of the codeset file; DO NOT include the file extension}
+- @codeset_name the name of the codeset file; DO NOT include the file extension
+- @filter_logic a string indicating filter logic that should be applied to achieve the
+desired variable; optional}
 
 \item{multi_or_single_site}{Option to run the function on a single vs multiple sites
 - @single - run the function for a single site

@@ -1,9 +1,8 @@
 
-#' EVP Process function
-#'
+#' EVP Process function for the PCORnet CDM
 #'
 #' @param cohort A dataframe with the cohort of patients for your study. Should include the columns:
-#'                       - @person_id
+#'                       - @patid
 #'                       - @start_date
 #'                       - @end_date
 #'                       - @site
@@ -11,10 +10,12 @@
 #'                         examined in the function. contains the following columns:
 #'                         - @variable a label for the variable captured by the associated codeset
 #'                         - @default_tbl CDM table where data related to the codeset is found
-#'                         - @field_name concept_id field with codes from the associated codeset
+#'                         - @concept_field concept_id field with codes from the associated codeset
 #'                         - @date_field a date field in the `default_tbl` that should be used for
 #'                                       over time analyses
 #'                         - @codeset_name the name of the codeset file; DO NOT include the file extension
+#'                         - @filter_logic a string indicating filter logic that should be applied to achieve the
+#'                                         desired variable; optional
 #'
 #' @param multi_or_single_site Option to run the function on a single vs multiple sites
 #'                               - @single - run the function for a single site

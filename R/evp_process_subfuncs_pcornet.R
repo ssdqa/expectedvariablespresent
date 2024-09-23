@@ -117,6 +117,8 @@ compute_evp_ssanom_pcnt <- function(cohort,
 
     domain_tbl <- cdm_tbl(evp_list[[i]][[2]]) %>%
       inner_join(cohort) %>%
+      filter(!!sym(evp_list[[i]][[4]]) >= start_date &
+               !!sym(evp_list[[i]][[4]]) <= end_date) %>%
       inner_join(load_codeset(evp_list[[i]][[5]]), by = join_cols) %>%
       group_by(!!!syms(grouped_list)) %>%
       mutate(variable = variable) %>%

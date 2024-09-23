@@ -10,7 +10,8 @@
 #' @param facet the variables by which you would like to facet the graph. available and/or recommended options for
 #'              faceting variables are provided in the `parameter_summary` csv file
 #'
-#' @return a graph to visualize the results from `evp_process` based on the parameters provided
+#' @return a graph to visualize the results from `evp_process` based on the parameters provided; see documentation
+#'         for individual subfunctions for details on specific output
 #'
 #' @export
 #'

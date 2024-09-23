@@ -8,7 +8,7 @@ compute_evp(
   cohort,
   grouped_list,
   time = FALSE,
-  evp_variable_file = read_codeset("evp_variables", "cccc")
+  evp_variable_file = expectedvariablespresent::evp_variable_file
 )
 }
 \arguments{

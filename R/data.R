@@ -15,8 +15,8 @@
 #' A data frame with 2 rows and 6 columns
 #' \describe{
 #'   \item{variable}{A string label for the variable of interest}
-#'   \item{default_tbl}{The name of the CDM table where the variable can be found}
-#'   \item{field_name}{The field in the default_tbl that should be used to join to the codeset}
+#'   \item{domain_tbl}{The name of the CDM table where the variable can be found}
+#'   \item{concept_field}{The field in the default_tbl that should be used to join to the codeset}
 #'   \item{date_field}{The date field in the default_tbl that should be used to filter the dataset to the cohort period and for longitudinal analyses}
 #'   \item{codeset_name}{The name of the codeset as found in the specs directory; file extension should not be included}
 #'   \item{filter_logic}{optional; a string to be parsed as logic to filter the default_tbl and better identify the variable of interest}

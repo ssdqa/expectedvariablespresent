@@ -22,7 +22,7 @@
 compute_evp <- function(cohort,
                         grouped_list,
                         time = FALSE,
-                        evp_variable_file = read_codeset('evp_variables', 'cccc')){
+                        evp_variable_file = expectedvariablespresent::evp_variable_file){
 
   evp_list <- split(evp_variable_file, seq(nrow(evp_variable_file)))
 
@@ -118,6 +118,8 @@ compute_evp_ssanom <- function(cohort,
 
     domain_tbl <- cdm_tbl(evp_list[[i]][[2]]) %>%
       inner_join(cohort) %>%
+      filter(!!sym(evp_list[[i]][[4]]) >= start_date &
+               !!sym(evp_list[[i]][[4]]) <= end_date) %>%
       inner_join(load_codeset(evp_list[[i]][[5]]), by = join_cols) %>%
       group_by(!!!syms(grouped_list)) %>%
       mutate(variable = variable) %>%

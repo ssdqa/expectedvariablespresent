@@ -27,7 +27,8 @@ can be any of the variables listed in the \code{evp_process} output}
 faceting variables are provided in the \code{parameter_summary} csv file}
 }
 \value{
-a graph to visualize the results from \code{evp_process} based on the parameters provided
+a graph to visualize the results from \code{evp_process} based on the parameters provided; see documentation
+for individual subfunctions for details on specific output
 }
 \description{
 EVP output function
