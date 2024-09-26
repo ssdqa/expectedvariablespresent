@@ -85,9 +85,11 @@ evp_ms_exp_nt <- function(process_output,
   }else(cli::cli_abort('Please choose an acceptable output level: {.code patient} or {.code row}'))
 
   plot <- process_output %>%
-    mutate(colors = ifelse(!!sym(prop) < 0.2 | !!sym(prop) > 0.8, 'group1', 'group2')) %>%
-    ggplot(aes(x = site, y = variable, fill = !!sym(prop))) +
-    geom_tile() +
+    mutate(colors = ifelse(!!sym(prop) < 0.2 | !!sym(prop) > 0.8, 'group1', 'group2'),
+           tooltip = paste0('Site: ', site,
+                            '\nProportion ', title, ': ', !!sym(prop))) %>%
+    ggplot(aes(x = site, y = variable, fill = !!sym(prop), tooltip = tooltip)) +
+    geom_tile_interactive() +
     geom_text(aes(label = !!sym(prop), color = colors), #size = 6,
               show.legend = FALSE) +
     scale_color_manual(values = c('white', 'black')) +
@@ -98,8 +100,8 @@ evp_ms_exp_nt <- function(process_output,
          y = 'Variable',
          fill = paste0('Proportion ', title))
 
-  plot[['metadata']] <- tibble('pkg_backend' = 'plotly',
-                               'tooltip' = FALSE)
+  plot[['metadata']] <- tibble('pkg_backend' = 'ggiraph',
+                               'tooltip' = TRUE)
 
   return(plot)
 }
@@ -207,7 +209,6 @@ evp_ms_anom_nt<-function(process_output,
     scale_shape_manual(values=c(19,8))+
     scale_y_discrete(labels = function(x) str_wrap(x, width = text_wrapping_char)) +
     theme_minimal() +
-    theme(axis.text.x = element_text(angle=60)) +
     labs(y = "Variable",
          size="",
          title=paste0('Anomalous Variables per ', title, ' by Site'),
@@ -468,7 +469,7 @@ evp_ms_anom_at <- function(process_output,
     geom_line(data=allsites, linewidth=1.1) +
     geom_smooth(se=TRUE,alpha=0.1,linewidth=0.5, formula = y ~ x) +
     theme_minimal() +
-    theme(axis.text.x = element_text(angle = 30, vjust = 1, hjust=1)) +
+    #theme(axis.text.x = element_text(angle = 30, vjust = 1, hjust=1)) +
     scale_color_ssdqa() +
     labs(y = 'Proportion (Loess)',
          x = 'Time',
@@ -480,7 +481,7 @@ evp_ms_anom_at <- function(process_output,
     geom_line(data=allsites,linewidth=1.1) +
     geom_line(linewidth=0.2) +
     theme_minimal() +
-    theme(axis.text.x = element_text(angle = 30, vjust = 1, hjust=1)) +
+    #theme(axis.text.x = element_text(angle = 30, vjust = 1, hjust=1)) +
     scale_color_ssdqa() +
     labs(x = 'Time',
          y = 'Proportion',
@@ -491,18 +492,19 @@ evp_ms_anom_at <- function(process_output,
     group_by(site, dist_eucl_mean) %>%
     summarise(mean_site_loess = mean(site_loess)) %>%
     mutate(tooltip = paste0('Site: ', site,
-                            '\nEuclidean Distance: ', dist_eucl_mean)) %>%
+                            '\nEuclidean Distance: ', dist_eucl_mean,
+                            '\nAverage Loess Proportion: ', mean_site_loess)) %>%
     ggplot(aes(x = site, y = dist_eucl_mean, fill = mean_site_loess, tooltip = tooltip)) +
     geom_col_interactive() +
     # geom_text(aes(label = dist_eucl_mean), vjust = 2, size = 3,
     #           show.legend = FALSE) +
-    coord_radial(r_axis_inside = FALSE, rotate_angle = TRUE) +
+    coord_radial(r.axis.inside = FALSE, rotate.angle = TRUE) +
     guides(theta = guide_axis_theta(angle = 0)) +
     theme_minimal() +
     scale_fill_ssdqa(palette = 'diverging', discrete = FALSE) +
-    theme(legend.position = 'bottom',
-          legend.text = element_text(angle = 45, vjust = 0.9, hjust = 1),
-          axis.text.x = element_text(face = 'bold')) +
+    # theme(legend.position = 'bottom',
+    #       legend.text = element_text(angle = 45, vjust = 0.9, hjust = 1),
+    #       axis.text.x = element_text(face = 'bold')) +
     labs(fill = 'Avg. Proportion \n(Loess)',
          y ='Euclidean Distance',
          x = '',
