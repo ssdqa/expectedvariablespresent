@@ -20,7 +20,7 @@ evp_output <- function(process_output,
                        # facet = NULL
                        ){
 
-  facet <- ifelse('age_grp' %in% colnames(process_output), 'age_grp', NA)
+  if('age_grp' %in% colnames(process_output)){facet <- 'age_grp'}else{facet <- NULL}
 
   if(output_function == 'evp_ss_exp_nt'){
 
