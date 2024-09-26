@@ -56,6 +56,7 @@ evp_ss_exp_nt <- function(process_output,
   plot[['metadata']] <- tibble('pkg_backend' = 'plotly',
                                'tooltip' = FALSE)
 
+  return(plot)
 
 }
 
@@ -100,6 +101,7 @@ evp_ms_exp_nt <- function(process_output,
   plot[['metadata']] <- tibble('pkg_backend' = 'plotly',
                                'tooltip' = FALSE)
 
+  return(plot)
 }
 
 #' * Single Site, Anomaly, No Time *
@@ -151,6 +153,8 @@ evp_ss_anom_nt <- function(process_output,
 
   plot[['metadata']] <- tibble('pkg_backend' = 'ggiraph',
                                'tooltip' = TRUE)
+
+  return(plot)
 
 }
 
@@ -215,6 +219,8 @@ evp_ms_anom_nt<-function(process_output,
   plt[['metadata']] <- tibble('pkg_backend' = 'ggiraph',
                               'tooltip' = TRUE)
 
+  return(plt)
+
 }
 
 #' * Single Site, Exploratory, Across Time *
@@ -254,6 +260,8 @@ evp_ss_exp_at <- function(process_output,
 
   p[['metadata']] <- tibble('pkg_backend' = 'plotly',
                             'tooltip' = FALSE)
+
+  return(p)
 
 }
 
@@ -306,6 +314,8 @@ evp_ms_exp_at <- function(process_output,
 
   p[['metadata']] <- tibble('pkg_backend' = 'plotly',
                             'tooltip' = FALSE)
+
+  return(p)
 
 }
 
