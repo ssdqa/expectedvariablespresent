@@ -52,7 +52,7 @@ compute_evp <- function(cohort,
                 total_row_ct = n()) %>%
       collect()
 
-    join_cols <- set_names('concept_id', evp_list$concept_field[[i]])
+    join_cols <- purrr::set_names('concept_id', evp_list[[i]]$concept_field)
 
     if(is.na(evp_list[[i]]$filter_logic)){
       fact_pts <- domain_tbl %>%
@@ -114,7 +114,7 @@ compute_evp_ssanom <- function(cohort,
 
     variable <- evp_list[[i]]$variable
 
-    join_cols <- set_names('concept_id', evp_list[[i]]$concept_field)
+    join_cols <- purrr::set_names('concept_id', evp_list[[i]]$concept_field)
 
     if(is.na(evp_list[[i]]$filter_logic)){
       domain_tbl <- cdm_tbl(evp_list[[i]]$domain_tbl) %>%
