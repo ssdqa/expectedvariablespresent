@@ -2,7 +2,6 @@
 #' @import ggplot2
 #' @import ggiraph
 #' @import tidyr
-#' @importFrom plotly ggplotly
 #' @importFrom plotly layout
 #' @importFrom timetk plot_anomalies
 #' @importFrom timetk plot_anomalies_decomp
@@ -42,7 +41,7 @@ evp_ss_exp_nt <- function(process_output,
 
   if(var_ct > 20){cli::cli_alert_warning('Output has been limited to top 20 variables to improve visibility on y-axis.')}
 
-  process_output %>%
+  plot <- process_output %>%
     arrange(desc(!!sym(prop))) %>%
     slice(1:20) %>%
     ggplot(aes(y = variable, x = !!sym(prop), fill = variable)) +
@@ -53,6 +52,9 @@ evp_ss_exp_nt <- function(process_output,
     labs(x = paste0('Proportion ', title),
          y = 'Variable',
          title = paste0('Proportion of ', title, ' per Variable'))
+
+  plot[['metadata']] <- tibble('pkg_backend' = 'plotly',
+                               'tooltip' = FALSE)
 
 
 }
@@ -81,7 +83,7 @@ evp_ms_exp_nt <- function(process_output,
     title <- 'Patients'
   }else(cli::cli_abort('Please choose an acceptable output level: {.code patient} or {.code row}'))
 
-  process_output %>%
+  plot <- process_output %>%
     mutate(colors = ifelse(!!sym(prop) < 0.2 | !!sym(prop) > 0.8, 'group1', 'group2')) %>%
     ggplot(aes(x = site, y = variable, fill = !!sym(prop))) +
     geom_tile() +
@@ -90,11 +92,13 @@ evp_ms_exp_nt <- function(process_output,
     scale_color_manual(values = c('white', 'black')) +
     scale_fill_ssdqa(palette = 'diverging', discrete = FALSE) +
     theme_minimal() +
-    theme(axis.text.x = element_text(angle = 60, hjust = 1, vjust = 1)) +
     labs(title = paste0('Proportion ', title, ' per Variable & Site'),
          x = 'Site',
          y = 'Variable',
          fill = paste0('Proportion ', title))
+
+  plot[['metadata']] <- tibble('pkg_backend' = 'plotly',
+                               'tooltip' = FALSE)
 
 }
 
@@ -143,12 +147,11 @@ evp_ss_anom_nt <- function(process_output,
     labs(title = 'Co-Occurrence of Variables',
          x = 'variable1',
          y = 'variable2') +
-    theme_minimal() +
-    theme(axis.text.x = element_text(angle = 30, vjust = 1, hjust=1))
+    theme_minimal()
 
-  p <- girafe(ggobj=plot,
-              width_svg=10,
-              height_svg=10)
+  plot[['metadata']] <- tibble('pkg_backend' = 'ggiraph',
+                               'tooltip' = TRUE)
+
 }
 
 #' * Multi Site, Anomaly, No Time *
@@ -209,7 +212,9 @@ evp_ms_anom_nt<-function(process_output,
            shape = guide_legend(title = 'Anomaly'),
            size = 'none')
 
-  girafe(ggobj = plt)
+  plt[['metadata']] <- tibble('pkg_backend' = 'ggiraph',
+                              'tooltip' = TRUE)
+
 }
 
 #' * Single Site, Exploratory, Across Time *
@@ -247,8 +252,8 @@ evp_ss_exp_at <- function(process_output,
          y = paste0('Proportion ', title),
          x = 'Time')
 
-  plot <- ggplotly(p)
-
+  p[['metadata']] <- tibble('pkg_backend' = 'plotly',
+                            'tooltip' = FALSE)
 
 }
 
@@ -299,8 +304,8 @@ evp_ms_exp_at <- function(process_output,
          y = paste0('Proportion ', title),
          x = 'Time')
 
-  plot <- ggplotly(p)
-
+  p[['metadata']] <- tibble('pkg_backend' = 'plotly',
+                            'tooltip' = FALSE)
 
 }
 
@@ -369,7 +374,10 @@ evp_ss_anom_at <- function(process_output,
           y = 'Proportion')+
      theme_minimal()
 
-   output <- ggplotly(new_pp)
+   new_pp[['metadata']] <- tibble('pkg_backend' = 'plotly',
+                                  'tooltip' = FALSE)
+
+   output <- new_pp
 
   }else{
 
@@ -384,6 +392,8 @@ evp_ss_anom_at <- function(process_output,
       layout(title = paste0('Anomalies for Variable ', filter_variable))
 
     output <- list(anomalies, decomp)
+
+    cli::cli_inform('This output uses an external package with preset theming - no additional customizations are available.')
 
   }
 
@@ -470,10 +480,12 @@ evp_ms_anom_at <- function(process_output,
     distinct(site, dist_eucl_mean, site_loess) %>%
     group_by(site, dist_eucl_mean) %>%
     summarise(mean_site_loess = mean(site_loess)) %>%
-    ggplot(aes(x = site, y = dist_eucl_mean, fill = mean_site_loess)) +
-    geom_col() +
-    geom_text(aes(label = dist_eucl_mean), vjust = 2, size = 3,
-              show.legend = FALSE) +
+    mutate(tooltip = paste0('Site: ', site,
+                            '\nEuclidean Distance: ', dist_eucl_mean)) %>%
+    ggplot(aes(x = site, y = dist_eucl_mean, fill = mean_site_loess, tooltip = tooltip)) +
+    geom_col_interactive() +
+    # geom_text(aes(label = dist_eucl_mean), vjust = 2, size = 3,
+    #           show.legend = FALSE) +
     coord_radial(r_axis_inside = FALSE, rotate_angle = TRUE) +
     guides(theta = guide_axis_theta(angle = 0)) +
     theme_minimal() +
@@ -486,11 +498,17 @@ evp_ms_anom_at <- function(process_output,
          x = '',
          title = paste0('Euclidean Distance for ', filter_variable))
 
-  plotly_p <- ggplotly(p,tooltip="text")
-  plotly_q <- ggplotly(q,tooltip="text")
+  p[['metadata']] <- tibble('pkg_backend' = 'plotly',
+                            'tooltip' = TRUE)
 
-  output <- list(plotly_p,
-                 plotly_q,
+  q[['metadata']] <- tibble('pkg_backend' = 'plotly',
+                            'tooltip' = TRUE)
+
+  t[['metadata']] <- tibble('pkg_backend' = 'ggiraph',
+                            'tooltip' = TRUE)
+
+  output <- list(p,
+                 q,
                  t)
 
   return(output)

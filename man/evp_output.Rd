@@ -4,13 +4,7 @@
 \alias{evp_output}
 \title{EVP output function}
 \usage{
-evp_output(
-  process_output,
-  output_function,
-  output_level,
-  filter_variable,
-  facet = NULL
-)
+evp_output(process_output, output_function, output_level, filter_variable)
 }
 \arguments{
 \item{process_output}{the output of the \code{evp_process} function}
@@ -22,9 +16,6 @@ file that is output to the provided results folder after running the \code{evp_p
 
 \item{filter_variable}{for @ms_anom_at, @ms_exp_at, and @ss_anom_at, the single variable that should be displayed in the output;
 can be any of the variables listed in the \code{evp_process} output}
-
-\item{facet}{the variables by which you would like to facet the graph. available and/or recommended options for
-faceting variables are provided in the \code{parameter_summary} csv file}
 }
 \value{
 a graph to visualize the results from \code{evp_process} based on the parameters provided; see documentation

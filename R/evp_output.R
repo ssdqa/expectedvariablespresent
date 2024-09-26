@@ -7,8 +7,6 @@
 #' @param output_level the type of counts the output should summarise -- either `patient` or `row`
 #' @param filter_variable for @ms_anom_at, @ms_exp_at, and @ss_anom_at, the single variable that should be displayed in the output;
 #'                        can be any of the variables listed in the `evp_process` output
-#' @param facet the variables by which you would like to facet the graph. available and/or recommended options for
-#'              faceting variables are provided in the `parameter_summary` csv file
 #'
 #' @return a graph to visualize the results from `evp_process` based on the parameters provided; see documentation
 #'         for individual subfunctions for details on specific output
@@ -18,8 +16,11 @@
 evp_output <- function(process_output,
                        output_function,
                        output_level,
-                       filter_variable,
-                       facet = NULL){
+                       filter_variable
+                       # facet = NULL
+                       ){
+
+  facet <- ifelse('age_grp' %in% colnames(process_output), 'age_grp', NULL)
 
   if(output_function == 'evp_ss_exp_nt'){
 

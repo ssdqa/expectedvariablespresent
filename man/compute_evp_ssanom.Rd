@@ -7,7 +7,7 @@
 compute_evp_ssanom(
   cohort,
   grouped_list,
-  evp_variable_file = read_codeset("evp_variables", "cccc")
+  evp_variable_file = expectedvariablespresent::evp_variable_file
 )
 }
 \arguments{

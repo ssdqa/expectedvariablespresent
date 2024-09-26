@@ -8,21 +8,21 @@ compute_evp_pcnt(
   cohort,
   grouped_list,
   time = FALSE,
-  evp_variable_file = read_codeset("evp_variables", "ccccc")
+  evp_variable_file = expectedvariablespresent::evp_variable_file
 )
 }
 \arguments{
-\item{cohort}{table of cohort members with at least \code{site}, \code{patid}, \code{start_date}, and \code{end_date}}
+\item{cohort}{table of cohort members with at least \code{site}, \code{person_id}, \code{start_date}, and \code{end_date}}
 
 \item{grouped_list}{list of columns that should be used to group the table}
 
 \item{time}{logical to determine whether the function is being run as part of \code{compute_fot} or not}
 
-\item{evp_variable_file}{CSV file with information about each of the concept sets that should be
+\item{evp_variable_file}{CSV file with information about each of the variables that should be
 examined in the function. contains the following columns:
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{                    `concept_group`, `default_tbl`, `field_name`, `date_field`, `codeset_name`,
-                    `filter_logic`, `vocabulary_field`
+                    `filter_logic`
 }\if{html}{\out{</div>}}}
 }
 \value{

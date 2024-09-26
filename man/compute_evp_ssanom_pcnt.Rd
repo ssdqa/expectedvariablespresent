@@ -7,11 +7,11 @@
 compute_evp_ssanom_pcnt(
   cohort,
   grouped_list,
-  evp_variable_file = read_codeset("evp_variables", "ccccc")
+  evp_variable_file = expectedvariablespresent::evp_variable_file
 )
 }
 \arguments{
-\item{cohort}{table of cohort members with at least \code{site}, \code{patid}, \code{start_date}, and \code{end_date}}
+\item{cohort}{table of cohort members with at least \code{site}, \code{person_id}, \code{start_date}, and \code{end_date}}
 
 \item{grouped_list}{list of columns that should be used to group the table}
 
@@ -19,7 +19,7 @@ compute_evp_ssanom_pcnt(
 examined in the function. contains the following columns:
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{                    `concept_group`, `default_tbl`, `field_name`, `date_field`, `codeset_name`,
-                    `filter_logic`, `vocabulary_field`
+                    `filter_logic`
 }\if{html}{\out{</div>}}}
 }
 \value{

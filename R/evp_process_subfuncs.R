@@ -30,20 +30,20 @@ compute_evp <- function(cohort,
 
   for(i in 1:length(evp_list)){
 
-    variable <- evp_list[[i]][[1]]
+    variable <- evp_list[[i]]$variable
 
     message(paste0('Starting ', variable))
 
-    domain_tbl <- cdm_tbl(evp_list[[i]][[2]]) %>%
+    domain_tbl <- cdm_tbl(evp_list[[i]]$domain_tbl) %>%
       inner_join(cohort) %>%
-      filter(!!sym(evp_list[[i]][[4]]) >= start_date &
-               !!sym(evp_list[[i]][[4]]) <= end_date) %>%
+      filter(!!sym(evp_list[[i]]$date_field) >= start_date &
+               !!sym(evp_list[[i]]$date_field) <= end_date) %>%
       group_by(!!!syms(grouped_list))
 
     if(time){
       domain_tbl <- domain_tbl %>%
-        filter(!!sym(evp_list[[i]][[4]]) >= time_start &
-                 !!sym(evp_list[[i]][[4]]) <= time_end) %>%
+        filter(!!sym(evp_list[[i]]$date_field) >= time_start &
+                 !!sym(evp_list[[i]]$date_field) <= time_end) %>%
         group_by(time_start, time_increment, .add = TRUE)
       }
 
@@ -52,17 +52,17 @@ compute_evp <- function(cohort,
                 total_row_ct = n()) %>%
       collect()
 
-    join_cols <- set_names('concept_id', evp_list[[i]][[3]])
+    join_cols <- set_names('concept_id', evp_list$concept_field[[i]])
 
-    if(is.na(evp_list[[i]][[6]])){
+    if(is.na(evp_list[[i]]$filter_logic)){
       fact_pts <- domain_tbl %>%
-        inner_join(load_codeset(evp_list[[i]][[5]]), by = join_cols) %>%
+        inner_join(load_codeset(evp_list[[i]]$codeset_name), by = join_cols) %>%
         summarise(variable_pt_ct = n_distinct(person_id),
                   variable_row_ct = n()) %>% collect()
     }else{
       fact_pts <- domain_tbl %>%
-        inner_join(load_codeset(evp_list[[i]][[5]]), by = join_cols) %>%
-        filter(!! rlang::parse_expr(evp_list[[i]][[6]])) %>%
+        inner_join(load_codeset(evp_list[[i]]$codeset_name), by = join_cols) %>%
+        filter(!! rlang::parse_expr(evp_list[[i]]$filter_logic)) %>%
         summarise(variable_pt_ct = n_distinct(person_id),
                   variable_row_ct = n()) %>% collect()
     }
@@ -75,7 +75,7 @@ compute_evp <- function(cohort,
 
     final_tbl[is.na(final_tbl)] <- 0
 
-    result[[paste0(evp_list[[i]][[1]])]] <- final_tbl
+    result[[paste0(evp_list[[i]]$variable)]] <- final_tbl
   }
 
   compress <- reduce(.x = result,
@@ -104,7 +104,7 @@ compute_evp <- function(cohort,
 #'
 compute_evp_ssanom <- function(cohort,
                                grouped_list,
-                               evp_variable_file = read_codeset('evp_variables', 'cccc')){
+                               evp_variable_file = expectedvariablespresent::evp_variable_file){
 
   evp_list <- split(evp_variable_file, seq(nrow(evp_variable_file)))
 
@@ -112,22 +112,39 @@ compute_evp_ssanom <- function(cohort,
 
   for(i in 1:length(evp_list)){
 
-    variable <- evp_list[[i]][[1]]
+    variable <- evp_list[[i]]$variable
 
-    join_cols <- set_names('concept_id', evp_list[[i]][[3]])
+    join_cols <- set_names('concept_id', evp_list[[i]]$concept_field)
 
-    domain_tbl <- cdm_tbl(evp_list[[i]][[2]]) %>%
-      inner_join(cohort) %>%
-      filter(!!sym(evp_list[[i]][[4]]) >= start_date &
-               !!sym(evp_list[[i]][[4]]) <= end_date) %>%
-      inner_join(load_codeset(evp_list[[i]][[5]]), by = join_cols) %>%
-      group_by(!!!syms(grouped_list)) %>%
-      mutate(variable = variable) %>%
-      select(person_id,
-             all_of(group_vars(cohort)),
-             variable) %>%
-      group_by(person_id, variable, .add = TRUE) %>%
-      summarise(ct = n())
+    if(is.na(evp_list[[i]]$filter_logic)){
+      domain_tbl <- cdm_tbl(evp_list[[i]]$domain_tbl) %>%
+        inner_join(cohort) %>%
+        filter(!!sym(evp_list[[i]]$date_field) >= start_date &
+                 !!sym(evp_list[[i]]$date_field) <= end_date) %>%
+        inner_join(load_codeset(evp_list[[i]]$codeset_name), by = join_cols) %>%
+        group_by(!!!syms(grouped_list)) %>%
+        mutate(variable = variable) %>%
+        select(person_id,
+               all_of(group_vars(cohort)),
+               variable) %>%
+        group_by(person_id, variable, .add = TRUE) %>%
+        summarise(ct = n())
+
+    }else{
+      domain_tbl <- cdm_tbl(evp_list[[i]]$domain_tbl) %>%
+        inner_join(cohort) %>%
+        filter(!!sym(evp_list[[i]]$date_field) >= start_date &
+                 !!sym(evp_list[[i]]$date_field) <= end_date) %>%
+        filter(!! rlang::parse_expr(evp_list[[i]]$filter_logic)) %>%
+        inner_join(load_codeset(evp_list[[i]]$codeset_name), by = join_cols) %>%
+        group_by(!!!syms(grouped_list)) %>%
+        mutate(variable = variable) %>%
+        select(person_id,
+               all_of(group_vars(cohort)),
+               variable) %>%
+        group_by(person_id, variable, .add = TRUE) %>%
+        summarise(ct = n())
+    }
 
     result[[i]] <- domain_tbl
 
