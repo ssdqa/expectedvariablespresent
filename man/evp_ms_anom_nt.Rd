@@ -21,6 +21,11 @@ a dot plot where the shape of the dot represents whether the point is
 anomalous, the color of the dot represents the proportion of rows/patients
 for a given variable, and the size of the dot represents the mean proportion
 across all sites
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{    if there were no groups eligible for analysis, a heat map showing the proportion
+    and a dot plot showing each site's average standard deviation away from the mean
+    proportion is returned instead
+}\if{html}{\out{</div>}}
 }
 \description{
 \itemize{
