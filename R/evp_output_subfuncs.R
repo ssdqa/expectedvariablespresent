@@ -427,7 +427,7 @@ evp_ss_anom_at <- function(process_output,
 
    new_pp <- ggplot(op_dat,aes(x,y)) +
      geom_ribbon(aes(ymin = lcl,ymax = ucl), fill = "lightgray",alpha = 0.4) +
-     geom_line(colour = ssdqa_colors_standard[[12]], size = .5) +
+     geom_line(colour = ssdqa_colors_standard[[12]], linewidth = .5) +
      geom_line(aes(x,cl)) +
      geom_point(colour = ssdqa_colors_standard[[6]] , fill = ssdqa_colors_standard[[6]], size = 1) +
      geom_point(data = subset(op_dat, y >= ucl), color = ssdqa_colors_standard[[3]], size = 2) +
