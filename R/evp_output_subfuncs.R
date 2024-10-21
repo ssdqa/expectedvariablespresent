@@ -415,8 +415,8 @@ evp_ss_anom_at <- function(process_output,
     final <- process_output %>%
       filter(variable %in% filter_variable) %>%
       unite(facet_col, !!!syms(facet), sep = '\n') %>%
-      rename('ycol' = ct,
-             'denom' = denom)
+      rename('ycol' := !!ct,
+             'denom' := !!denom)
 
     pp_qi <-  qic(data = final, x = time_start, y = ycol, chart = 'pp', facets = ~facet_col,
         title = paste0('Control Chart: Proportion of ', title, ' per Variable'),
