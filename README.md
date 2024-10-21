@@ -8,7 +8,7 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 status](https://www.r-pkg.org/badges/version/expectedvariablespresent)](https://CRAN.R-project.org/package=expectedvariablespresent)
 <!-- badges: end -->
 
-The Expected Variables Present module summarizes the presence of user-defined variables within a dataset. 
+The Expected Variables Present module both checks for the presence and provides distributions of variables in a dataset. It allows the investigator to visualize multiple variables for comparison and to show the co-occurrence of variables in the same patient.
 
 ## Installation
 
