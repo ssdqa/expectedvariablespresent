@@ -1,40 +1,37 @@
 
-#' EVP Process function
-#'
+#' Expected Variables Present
 #'
 #' @param cohort A dataframe with the cohort of patients for your study. Should include the columns:
-#'                       - @person_id
-#'                       - @start_date
-#'                       - @end_date
-#'                       - @site
+#' - `person_id`
+#' - `start_date`
+#' - `end_date`
+#' - `site`
+#' @param omop_or_pcornet Option to run the function using the OMOP or PCORnet CDM as the default CDM
+#' - `omop`: run the [evp_process_omop()] function against an OMOP CDM instance
+#' - `pcornet`: run the [evp_process_pcornet()] function against a PCORnet CDM instance
 #' @param evp_variable_file CSV file with information about each of the variables that should be
-#'                         examined in the function. contains the following columns:
-#'                         - @variable a label for the variable captured by the associated codeset
-#'                         - @default_tbl CDM table where data related to the codeset is found
-#'                         - @concept_field concept_id field with codes from the associated codeset
-#'                         - @date_field a date field in the `default_tbl` that should be used for
-#'                                       over time analyses
-#'                         - @codeset_name the name of the codeset file; DO NOT include the file extension
-#'                         - @filter_logic a string indicating filter logic that should be applied to achieve the
-#'                                         desired variable; optional
-#'
+#' examined in the function. contains the following columns:
+#' - `variable` a label for the variable captured by the associated codeset
+#' - `default_tbl` CDM table where data related to the codeset is found
+#' - `concept_field` concept_id field with codes from the associated codeset
+#' - `date_field` a date field in the `default_tbl` that should be used for over time analyses
+#' - `codeset_name` the name of the codeset file; DO NOT include the file extension
+#' - `filter_logic` a string indicating filter logic that should be applied to achieve the desired variable; optional
 #' @param multi_or_single_site Option to run the function on a single vs multiple sites
-#'                               - @single - run the function for a single site
-#'                               - @multi - run the function for multiple sites
+#' - `single`: run the function for a single site
+#' - `multi`: run the function for multiple sites
 #' @param anomaly_or_exploratory Option to conduct an exploratory or anomaly detection analysis. Exploratory analyses give a high
-#'                               level summary of the data to examine the fact representation within the cohort. Anomaly detection
-#'                               analyses are specialized to identify outliers within the cohort.
+#' level summary of the data to examine the fact representation within the cohort. Anomaly detection
+#' analyses are specialized to identify outliers within the cohort.
 #' @param output_level the level of output to use for an AUC computation, exclusive to `ms_anom_at`; either `patient` or `row` --
-#'                     defaults to `row`
-#' @param age_groups If you would like to stratify the results by age group, fill out the provided `age_group_definitions.csv` file
-#'                     with the following information:
-#'                     - @min_age: the minimum age for the group (i.e. 10)
-#'                     - @max_age: the maximum age for the group (i.e. 20)
-#'                     - @group: a string label for the group (i.e. 10-20, Young Adult, etc.)
+#' defaults to `row`
+#' @param age_groups If you would like to stratify the results by age group,  create a table or CSV file with the following
+#'                   columns and include it as the `age_groups` function parameter:
+#' - `min_age`: the minimum age for the group (i.e. 10)
+#' - `max_age`: the maximum age for the group (i.e. 20)
+#' - `group`: a string label for the group (i.e. 10-20, Young Adult, etc.)
 #'
-#'                     Then supply this csv file as the age_groups argument (i.e. read.csv('path/to/age_group_definitions.csv'))
-#'
-#'                     If you would not like to stratify by age group, leave the argument as NULL
+#' If you would *not* like to stratify by age group, leave the argument as NULL
 #' @param p_value the p value to be used as a threshold in the multi-site anomaly detection analysis
 #' @param time a logical that tells the function whether you would like to look at the output over time
 #' @param time_span when time = TRUE, this argument defines the start and end dates for the time period of interest. should be
@@ -48,10 +45,8 @@
 #'
 #' @export
 #'
-#' @import ssdqa.gen
-#' @importFrom stringr str_wrap
-#'
 evp_process <- function(cohort,
+                        omop_or_pcornet = 'omop',
                         evp_variable_file = expectedvariablespresent::evp_variable_file,
                         multi_or_single_site = 'single',
                         anomaly_or_exploratory='exploratory',
@@ -63,123 +58,46 @@ evp_process <- function(cohort,
                         time_period = 'year'
 ){
 
+  ## Check proper arguments
+  cli::cli_div(theme = list(span.code = list(color = 'blue')))
+
+  if(!multi_or_single_site %in% c('single', 'multi')){cli::cli_abort('Invalid argument for {.code multi_or_single_site}: please enter either {.code multi} or {.code single}')}
+  if(!anomaly_or_exploratory %in% c('anomaly', 'exploratory')){cli::cli_abort('Invalid argument for {.code anomaly_or_exploratory}: please enter either {.code anomaly} or {.code exploratory}')}
+
   ## parameter summary output
   output_type <- suppressWarnings(param_summ(check_string = 'evp',
                                              as.list(environment())))
 
+  if(tolower(omop_or_pcornet) == 'omop'){
 
-  # Add site check
-  site_filter <- check_site_type(cohort = cohort,
-                                 multi_or_single_site = multi_or_single_site)
-  cohort_filter <- site_filter$cohort
-  grouped_list <- site_filter$grouped_list
-  site_col <- site_filter$grouped_list
-  site_list_adj <- site_filter$site_list_adj
+    evp_rslt <- evp_process_omop(cohort = cohort,
+                                 evp_variable_file = evp_variable_file,
+                                 multi_or_single_site = multi_or_single_site,
+                                 anomaly_or_exploratory = anomaly_or_exploratory,
+                                 output_level = output_level,
+                                 age_groups = age_groups,
+                                 time = time,
+                                 time_period = time_period,
+                                 time_span = time_span,
+                                 p_value = p_value)
 
-  # Set up grouped list
+  }else if(tolower(omop_or_pcornet) == 'pcornet'){
 
-  #grouped_list <- grouped_list %>% append('domain')
-
-  if(is.data.frame(age_groups)){grouped_list <- grouped_list %>% append('age_grp')}
-
-  site_output <- list()
-
-  # Prep cohort
-
-  cohort_prep <- prepare_cohort(cohort_tbl = cohort_filter, age_groups = age_groups, codeset = NULL) %>%
-    group_by(!!! syms(grouped_list))
-
-  # Execute function
-  for(k in 1:length(site_list_adj)) {
-
-    site_list_thisrnd <- site_list_adj[[k]]
-
-    # filters by site
-    cohort_site <- cohort_prep %>% filter(!!sym(site_col)%in%c(site_list_thisrnd))
-
-    if(! time) {
-
-      if(multi_or_single_site == 'single' && anomaly_or_exploratory == 'anomaly'){
-
-        concept_check <- compute_evp_ssanom(cohort = cohort_site,
-                                            grouped_list = grouped_list,
-                                            evp_variable_file = evp_variable_file)
-
-      }else{
-
-        concept_check <- compute_evp(cohort = cohort_site,
-                                     grouped_list = grouped_list,
-                                     evp_variable_file = evp_variable_file,
-                                     time = time)
-      }
-
-      site_output[[k]] <- concept_check
-
-    } else if(time){
-
-        concept_check <- compute_fot(cohort = cohort_site,
-                                     site_col = site_col,
-                                     site_list = site_list_adj,
-                                     time_span = time_span,
-                                     time_period = time_period,
-                                     reduce_id = NULL,
-                                     check_func = function(dat){
-                                       compute_evp(cohort = dat,
-                                                   grouped_list = grouped_list,
-                                                   time = TRUE,
-                                                   evp_variable_file = evp_variable_file)
-                                     })
-
-    site_output[[k]] <- concept_check
-
-    }
-
-    evp_tbl <- reduce(.x=site_output,
-                      .f=dplyr::union)
-
-  }
-
-  if(time == TRUE && multi_or_single_site == 'multi' && anomaly_or_exploratory == 'anomaly'){
-
-    var_col <- ifelse(output_level == 'row', 'prop_row_variable', 'prop_pt_variable')
-
-    evp_tbl_final <- ms_anom_euclidean(fot_input_tbl = evp_tbl,
-                                       grp_vars = c('site', 'variable'),
-                                       var_col = var_col)
-
-    }else if(time == TRUE && multi_or_single_site == 'single' && anomaly_or_exploratory == 'anomaly'){
-
-      var_col <- ifelse(output_level == 'row', 'prop_row_variable', 'prop_pt_variable')
-
-      evp_tbl_final <- anomalize_ss_anom_at(fot_input_tbl = evp_tbl,
-                                            time_var = 'time_start',
-                                            grp_vars = 'variable',
-                                            var_col = var_col)
-
-    }else if(time != TRUE && multi_or_single_site == 'multi' && anomaly_or_exploratory == 'anomaly'){
-
-      var_col <- ifelse(output_level == 'row', 'prop_row_variable', 'prop_pt_variable')
-
-      evp_tbl_int <- compute_dist_anomalies(df_tbl = evp_tbl,
-                                            grp_vars = c('variable'),
-                                            var_col = var_col,
-                                            denom_cols = c('variable', 'total_pt_ct', 'total_row_ct'))
-
-      evp_tbl_final <- detect_outliers(df_tbl = evp_tbl_int,
-                                       tail_input = 'both',
-                                       p_input = p_value,
-                                       column_analysis = var_col,
-                                       column_variable = 'variable')
-
-
-    }else{(evp_tbl_final <- evp_tbl)}
-
-  # evp_tbl_final %>%
-  #   replace_site_col() %>%
-  #   output_tbl('evp_process_results', file = TRUE)
+    evp_rslt <- evp_process_pcornet(cohort = cohort,
+                                    evp_variable_file = evp_variable_file,
+                                    multi_or_single_site = multi_or_single_site,
+                                    anomaly_or_exploratory = anomaly_or_exploratory,
+                                    output_level = output_level,
+                                    age_groups = age_groups,
+                                    time = time,
+                                    time_period = time_period,
+                                    time_span = time_span,
+                                    p_value = p_value)
+  }else{cli::cli_abort('Invalid argument for {.code omop_or_pcornet}: this function is only compatible with {.code omop} or {.code pcornet}')}
 
   cli::cli_inform(str_wrap(paste0('Based on your chosen parameters, we recommend using the following
                        output function in evp_output: ', output_type, '.')))
 
-  return(evp_tbl_final %>% replace_site_col())
+  return(evp_rslt)
+
 }

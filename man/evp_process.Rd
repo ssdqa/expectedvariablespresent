@@ -2,10 +2,11 @@
 % Please edit documentation in R/evp_process.R
 \name{evp_process}
 \alias{evp_process}
-\title{EVP Process function}
+\title{Expected Variables Present}
 \usage{
 evp_process(
   cohort,
+  omop_or_pcornet = "omop",
   evp_variable_file = expectedvariablespresent::evp_variable_file,
   multi_or_single_site = "single",
   anomaly_or_exploratory = "exploratory",
@@ -19,25 +20,35 @@ evp_process(
 }
 \arguments{
 \item{cohort}{A dataframe with the cohort of patients for your study. Should include the columns:
-- @person_id
-- @start_date
-- @end_date
-- @site}
+\itemize{
+\item \code{person_id}
+\item \code{start_date}
+\item \code{end_date}
+\item \code{site}
+}}
+
+\item{omop_or_pcornet}{Option to run the function using the OMOP or PCORnet CDM as the default CDM
+\itemize{
+\item \code{omop}: run the \code{\link[=evp_process_omop]{evp_process_omop()}} function against an OMOP CDM instance
+\item \code{pcornet}: run the \code{\link[=evp_process_pcornet]{evp_process_pcornet()}} function against a PCORnet CDM instance
+}}
 
 \item{evp_variable_file}{CSV file with information about each of the variables that should be
 examined in the function. contains the following columns:
-- @variable a label for the variable captured by the associated codeset
-- @default_tbl CDM table where data related to the codeset is found
-- @concept_field concept_id field with codes from the associated codeset
-- @date_field a date field in the \code{default_tbl} that should be used for
-over time analyses
-- @codeset_name the name of the codeset file; DO NOT include the file extension
-- @filter_logic a string indicating filter logic that should be applied to achieve the
-desired variable; optional}
+\itemize{
+\item \code{variable} a label for the variable captured by the associated codeset
+\item \code{default_tbl} CDM table where data related to the codeset is found
+\item \code{concept_field} concept_id field with codes from the associated codeset
+\item \code{date_field} a date field in the \code{default_tbl} that should be used for over time analyses
+\item \code{codeset_name} the name of the codeset file; DO NOT include the file extension
+\item \code{filter_logic} a string indicating filter logic that should be applied to achieve the desired variable; optional
+}}
 
 \item{multi_or_single_site}{Option to run the function on a single vs multiple sites
-- @single - run the function for a single site
-- @multi - run the function for multiple sites}
+\itemize{
+\item \code{single}: run the function for a single site
+\item \code{multi}: run the function for multiple sites
+}}
 
 \item{anomaly_or_exploratory}{Option to conduct an exploratory or anomaly detection analysis. Exploratory analyses give a high
 level summary of the data to examine the fact representation within the cohort. Anomaly detection
@@ -46,16 +57,15 @@ analyses are specialized to identify outliers within the cohort.}
 \item{output_level}{the level of output to use for an AUC computation, exclusive to \code{ms_anom_at}; either \code{patient} or \code{row} --
 defaults to \code{row}}
 
-\item{age_groups}{If you would like to stratify the results by age group, fill out the provided \code{age_group_definitions.csv} file
-with the following information:
-- @min_age: the minimum age for the group (i.e. 10)
-- @max_age: the maximum age for the group (i.e. 20)
-- @group: a string label for the group (i.e. 10-20, Young Adult, etc.)
+\item{age_groups}{If you would like to stratify the results by age group,  create a table or CSV file with the following
+columns and include it as the \code{age_groups} function parameter:
+\itemize{
+\item \code{min_age}: the minimum age for the group (i.e. 10)
+\item \code{max_age}: the maximum age for the group (i.e. 20)
+\item \code{group}: a string label for the group (i.e. 10-20, Young Adult, etc.)
+}
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{                Then supply this csv file as the age_groups argument (i.e. read.csv('path/to/age_group_definitions.csv'))
-
-                If you would not like to stratify by age group, leave the argument as NULL
-}\if{html}{\out{</div>}}}
+If you would \emph{not} like to stratify by age group, leave the argument as NULL}
 
 \item{p_value}{the p value to be used as a threshold in the multi-site anomaly detection analysis}
 
@@ -73,5 +83,5 @@ this output should then be used in the \code{evp_output} function to generate an
 visualization
 }
 \description{
-EVP Process function
+Expected Variables Present
 }

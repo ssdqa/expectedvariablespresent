@@ -1,15 +1,18 @@
 
 
-#' EVP Base Function
+#' Compute variable distribution (PCORnet)
 #'
 #' @param cohort table of cohort members with at least `site`, `person_id`, `start_date`, and `end_date`
 #' @param grouped_list list of columns that should be used to group the table
 #' @param time logical to determine whether the function is being run as part of `compute_fot` or not
 #' @param evp_variable_file CSV file with information about each of the variables that should be
-#'                          examined in the function. contains the following columns:
-#'
-#'                         `concept_group`, `default_tbl`, `field_name`, `date_field`, `codeset_name`,
-#'                         `filter_logic`
+#' examined in the function. contains the following columns:
+#' - `variable` a label for the variable captured by the associated codeset
+#' - `default_tbl` CDM table where data related to the codeset is found
+#' - `concept_field` concept_id field with codes from the associated codeset
+#' - `date_field` a date field in the `default_tbl` that should be used for over time analyses
+#' - `codeset_name` the name of the codeset file; DO NOT include the file extension
+#' - `filter_logic` a string indicating filter logic that should be applied to achieve the desired variable; optional
 #'
 #' @return dataframe with patient/row counts and proportions that are computed per group defined in
 #'         grouped_list, and if time = TRUE, for each time period defined in compute_fot
@@ -48,7 +51,7 @@ compute_evp_pcnt <- function(cohort,
                 total_row_ct = n()) %>%
       collect()
 
-    join_cols <- set_names('concept_id', evp_list$concept_field[[i]])
+    join_cols <- purrr::set_names('concept_code', evp_list[[i]]$concept_field)
 
     if(is.na(evp_list[[i]]$filter_logic)){
       fact_pts <- domain_tbl %>%
@@ -89,10 +92,13 @@ compute_evp_pcnt <- function(cohort,
 #' @param cohort table of cohort members with at least `site`, `person_id`, `start_date`, and `end_date`
 #' @param grouped_list list of columns that should be used to group the table
 #' @param evp_variable_file CSV file with information about each of the variables that should be
-#'                          examined in the function. contains the following columns:
-#'
-#'                         `concept_group`, `default_tbl`, `field_name`, `date_field`, `codeset_name`,
-#'                         `filter_logic`
+#' examined in the function. contains the following columns:
+#' - `variable` a label for the variable captured by the associated codeset
+#' - `default_tbl` CDM table where data related to the codeset is found
+#' - `concept_field` concept_id field with codes from the associated codeset
+#' - `date_field` a date field in the `default_tbl` that should be used for over time analyses
+#' - `codeset_name` the name of the codeset file; DO NOT include the file extension
+#' - `filter_logic` a string indicating filter logic that should be applied to achieve the desired variable; optional
 #'
 #' @return one dataframe with the jaccard similarity index for each concept group provided
 #'         in the concept file
@@ -110,7 +116,7 @@ compute_evp_ssanom_pcnt <- function(cohort,
 
     variable <- evp_list[[i]]$variable
 
-    join_cols <- set_names('concept_id', evp_list[[i]]$concept_field)
+    join_cols <- purrr::set_names('concept_code', evp_list[[i]]$concept_field)
 
     if(is.na(evp_list[[i]]$filter_logic)){
       domain_tbl <- cdm_tbl(evp_list[[i]]$domain_tbl) %>%

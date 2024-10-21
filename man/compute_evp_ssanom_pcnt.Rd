@@ -17,10 +17,14 @@ compute_evp_ssanom_pcnt(
 
 \item{evp_variable_file}{CSV file with information about each of the variables that should be
 examined in the function. contains the following columns:
-
-\if{html}{\out{<div class="sourceCode">}}\preformatted{                    `concept_group`, `default_tbl`, `field_name`, `date_field`, `codeset_name`,
-                    `filter_logic`
-}\if{html}{\out{</div>}}}
+\itemize{
+\item \code{variable} a label for the variable captured by the associated codeset
+\item \code{default_tbl} CDM table where data related to the codeset is found
+\item \code{concept_field} concept_id field with codes from the associated codeset
+\item \code{date_field} a date field in the \code{default_tbl} that should be used for over time analyses
+\item \code{codeset_name} the name of the codeset file; DO NOT include the file extension
+\item \code{filter_logic} a string indicating filter logic that should be applied to achieve the desired variable; optional
+}}
 }
 \value{
 one dataframe with the jaccard similarity index for each concept group provided

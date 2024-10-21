@@ -1,5 +1,5 @@
 
-#' EVP Process -- PCORnet
+#' EVP Process -- OMOP
 #'
 #' @param cohort A dataframe with the cohort of patients for your study. Should include the columns:
 #' - `person_id`
@@ -41,17 +41,19 @@
 #'         this output should then be used in the `evp_output` function to generate an appropriate
 #'         visualization
 #'
+#' @import ssdqa.gen
+#' @importFrom stringr str_wrap
 #'
-evp_process_pcornet <- function(cohort,
-                                evp_variable_file = expectedvariablespresent::evp_variable_file,
-                                multi_or_single_site = 'single',
-                                anomaly_or_exploratory='exploratory',
-                                output_level = 'row',
-                                age_groups = NULL,
-                                p_value = 0.9,
-                                time = FALSE,
-                                time_span = c('2012-01-01', '2020-01-01'),
-                                time_period = 'year'
+evp_process_omop <- function(cohort,
+                             evp_variable_file = expectedvariablespresent::evp_variable_file,
+                             multi_or_single_site = 'single',
+                             anomaly_or_exploratory='exploratory',
+                             output_level = 'row',
+                             age_groups = NULL,
+                             p_value = 0.9,
+                             time = FALSE,
+                             time_span = c('2012-01-01', '2020-01-01'),
+                             time_period = 'year'
 ){
 
   # Add site check
@@ -72,7 +74,7 @@ evp_process_pcornet <- function(cohort,
 
   # Prep cohort
 
-  cohort_prep <- prepare_cohort_pcnt(cohort_tbl = cohort_filter, age_groups = age_groups, codeset = NULL) %>%
+  cohort_prep <- prepare_cohort(cohort_tbl = cohort_filter, age_groups = age_groups, codeset = NULL) %>%
     group_by(!!! syms(grouped_list))
 
   # Execute function
@@ -87,13 +89,13 @@ evp_process_pcornet <- function(cohort,
 
       if(multi_or_single_site == 'single' && anomaly_or_exploratory == 'anomaly'){
 
-        concept_check <- compute_evp_ssanom_pcnt(cohort = cohort_site,
+        concept_check <- compute_evp_ssanom_omop(cohort = cohort_site,
                                                  grouped_list = grouped_list,
                                                  evp_variable_file = evp_variable_file)
 
       }else{
 
-        concept_check <- compute_evp_pcnt(cohort = cohort_site,
+        concept_check <- compute_evp_omop(cohort = cohort_site,
                                           grouped_list = grouped_list,
                                           evp_variable_file = evp_variable_file,
                                           time = time)
@@ -110,7 +112,7 @@ evp_process_pcornet <- function(cohort,
                                      time_period = time_period,
                                      reduce_id = NULL,
                                      check_func = function(dat){
-                                       compute_evp_pcnt(cohort = dat,
+                                       compute_evp_omop(cohort = dat,
                                                         grouped_list = grouped_list,
                                                         time = TRUE,
                                                         evp_variable_file = evp_variable_file)
@@ -133,34 +135,33 @@ evp_process_pcornet <- function(cohort,
                                        grp_vars = c('site', 'variable'),
                                        var_col = var_col)
 
-  }else if(time == TRUE && multi_or_single_site == 'single' && anomaly_or_exploratory == 'anomaly'){
+    }else if(time == TRUE && multi_or_single_site == 'single' && anomaly_or_exploratory == 'anomaly'){
 
-    var_col <- ifelse(output_level == 'row', 'prop_row_variable', 'prop_pt_variable')
+      var_col <- ifelse(output_level == 'row', 'prop_row_variable', 'prop_pt_variable')
 
-    evp_tbl_final <- anomalize_ss_anom_at(fot_input_tbl = evp_tbl,
-                                          time_var = 'time_start',
-                                          grp_vars = 'variable',
-                                          var_col = var_col)
+      evp_tbl_final <- anomalize_ss_anom_at(fot_input_tbl = evp_tbl,
+                                            time_var = 'time_start',
+                                            grp_vars = 'variable',
+                                            var_col = var_col)
 
-  }else if(time != TRUE && multi_or_single_site == 'multi' && anomaly_or_exploratory == 'anomaly'){
+    }else if(time != TRUE && multi_or_single_site == 'multi' && anomaly_or_exploratory == 'anomaly'){
 
-    var_col <- ifelse(output_level == 'row', 'prop_row_variable', 'prop_pt_variable')
+      var_col <- ifelse(output_level == 'row', 'prop_row_variable', 'prop_pt_variable')
 
-    evp_tbl_int <- compute_dist_anomalies(df_tbl = evp_tbl,
-                                          grp_vars = c('variable'),
-                                          var_col = var_col,
-                                          denom_cols = c('variable', 'total_pt_ct', 'total_row_ct'))
+      evp_tbl_int <- compute_dist_anomalies(df_tbl = evp_tbl,
+                                            grp_vars = c('variable'),
+                                            var_col = var_col,
+                                            denom_cols = c('variable', 'total_pt_ct', 'total_row_ct'))
 
-    evp_tbl_final <- detect_outliers(df_tbl = evp_tbl_int,
-                                     tail_input = 'both',
-                                     p_input = p_value,
-                                     column_analysis = var_col,
-                                     column_variable = 'variable')
+      evp_tbl_final <- detect_outliers(df_tbl = evp_tbl_int,
+                                       tail_input = 'both',
+                                       p_input = p_value,
+                                       column_analysis = var_col,
+                                       column_variable = 'variable')
 
 
-  }else{(evp_tbl_final <- evp_tbl)}
+    }else{(evp_tbl_final <- evp_tbl)}
 
 
   return(evp_tbl_final %>% replace_site_col())
 }
-

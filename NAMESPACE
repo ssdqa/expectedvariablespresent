@@ -3,7 +3,6 @@
 export("%>%")
 export(evp_output)
 export(evp_process)
-export(evp_process_pcornet)
 import(argos)
 import(dplyr)
 import(ggiraph)
