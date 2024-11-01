@@ -7,7 +7,7 @@
 compute_evp_ssanom_omop(
   cohort,
   grouped_list,
-  evp_variable_file = expectedvariablespresent::evp_variable_file
+  evp_variable_file = expectedvariablespresent::evp_variable_file_omop
 )
 }
 \arguments{

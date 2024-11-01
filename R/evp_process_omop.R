@@ -45,7 +45,7 @@
 #' @importFrom stringr str_wrap
 #'
 evp_process_omop <- function(cohort,
-                             evp_variable_file = expectedvariablespresent::evp_variable_file,
+                             evp_variable_file = expectedvariablespresent::evp_variable_file_omop,
                              multi_or_single_site = 'single',
                              anomaly_or_exploratory='exploratory',
                              output_level = 'row',

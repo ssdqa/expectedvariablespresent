@@ -25,7 +25,7 @@
 compute_evp_omop <- function(cohort,
                              grouped_list,
                              time = FALSE,
-                             evp_variable_file = expectedvariablespresent::evp_variable_file){
+                             evp_variable_file = expectedvariablespresent::evp_variable_file_omop){
 
   evp_list <- split(evp_variable_file, seq(nrow(evp_variable_file)))
 
@@ -110,7 +110,7 @@ compute_evp_omop <- function(cohort,
 #'
 compute_evp_ssanom_omop <- function(cohort,
                                     grouped_list,
-                                    evp_variable_file = expectedvariablespresent::evp_variable_file){
+                                    evp_variable_file = expectedvariablespresent::evp_variable_file_omop){
 
   evp_list <- split(evp_variable_file, seq(nrow(evp_variable_file)))
 

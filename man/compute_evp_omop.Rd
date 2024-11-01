@@ -8,7 +8,7 @@ compute_evp_omop(
   cohort,
   grouped_list,
   time = FALSE,
-  evp_variable_file = expectedvariablespresent::evp_variable_file
+  evp_variable_file = expectedvariablespresent::evp_variable_file_omop
 )
 }
 \arguments{

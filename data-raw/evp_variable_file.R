@@ -1,10 +1,21 @@
 ## code to prepare `evp_variable_file` dataset goes here
 
-evp_variable_file <- tibble::tibble(variable = c('Sample OMOP Variable', 'Sample PCORnet Variable'),
-                                    domain_tbl = c('condition_occurrence', 'lab_result_cm'),
-                                    concept_field = c('condition_concept_id', 'lab_loinc'),
-                                    date_field = c('condition_start_date', 'result_date'),
-                                    codeset_name = c('sample_codeset_dx', 'sample_codeset_lab'),
-                                    filter_logic = c(NA, 'result_num >= 8'))
+evp_variable_file_omop <- tibble::tibble(variable = c('Sample OMOP Variable'),
+                                         domain_tbl = c('condition_occurrence'),
+                                         concept_field = c('condition_concept_id'),
+                                         date_field = c('condition_start_date'),
+                                         codeset_name = c('sample_codeset_dx'),
+                                         filter_logic = c(NA))
 
-usethis::use_data(evp_variable_file, overwrite = TRUE)
+usethis::use_data(evp_variable_file_omop, overwrite = TRUE)
+
+
+evp_variable_file_pcornet <- tibble::tibble(variable = c('Sample PCORnet Variable'),
+                                            domain_tbl = c('diagnosis'),
+                                            concept_field = c('dx'),
+                                            date_field = c('admit_date'),
+                                            vocabulary_field = c('dx_type'),
+                                            codeset_name = c('sample_codeset_dx'),
+                                            filter_logic = c(NA))
+
+usethis::use_data(evp_variable_file_pcornet, overwrite = TRUE)

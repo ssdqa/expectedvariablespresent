@@ -11,6 +11,8 @@
 #' - `default_tbl` CDM table where data related to the codeset is found
 #' - `concept_field` concept_id field with codes from the associated codeset
 #' - `date_field` a date field in the `default_tbl` that should be used for over time analyses
+#' - `vocabulary_field` PCORNET ONLY; field in the `default_tbl` that defines the vocabulary type of the concept (i.e. dx_type)
+#' if this field is used, the codeset should have a `vocabulary_id` column that defines the appropriate vocabularies for each concept
 #' - `codeset_name` the name of the codeset file; DO NOT include the file extension
 #' - `filter_logic` a string indicating filter logic that should be applied to achieve the desired variable; optional
 #'
@@ -21,7 +23,7 @@
 compute_evp_pcnt <- function(cohort,
                              grouped_list,
                              time = FALSE,
-                             evp_variable_file = expectedvariablespresent::evp_variable_file){
+                             evp_variable_file = expectedvariablespresent::evp_variable_file_pcornet){
 
   evp_list <- split(evp_variable_file, seq(nrow(evp_variable_file)))
 
@@ -52,6 +54,15 @@ compute_evp_pcnt <- function(cohort,
       collect()
 
     join_cols <- purrr::set_names('concept_code', evp_list[[i]]$concept_field)
+
+    vocab_col <- evp_list[[i]]$vocabulary_field
+
+    if(!is.na(vocab_col)){
+
+      join_cols2 <- set_names('vocabulary_id', vocab_col)
+      join_cols <- join_cols %>% append(join_cols2)
+
+    }
 
     if(is.na(evp_list[[i]]$filter_logic)){
       fact_pts <- domain_tbl %>%
@@ -97,6 +108,8 @@ compute_evp_pcnt <- function(cohort,
 #' - `default_tbl` CDM table where data related to the codeset is found
 #' - `concept_field` concept_id field with codes from the associated codeset
 #' - `date_field` a date field in the `default_tbl` that should be used for over time analyses
+#' - `vocabulary_field` PCORNET ONLY; field in the `default_tbl` that defines the vocabulary type of the concept (i.e. dx_type)
+#' if this field is used, the codeset should have a `vocabulary_id` column that defines the appropriate vocabularies for each concept
 #' - `codeset_name` the name of the codeset file; DO NOT include the file extension
 #' - `filter_logic` a string indicating filter logic that should be applied to achieve the desired variable; optional
 #'
@@ -106,7 +119,7 @@ compute_evp_pcnt <- function(cohort,
 #'
 compute_evp_ssanom_pcnt <- function(cohort,
                                     grouped_list,
-                                    evp_variable_file = expectedvariablespresent::evp_variable_file){
+                                    evp_variable_file = expectedvariablespresent::evp_variable_file_pcornet){
 
   evp_list <- split(evp_variable_file, seq(nrow(evp_variable_file)))
 
@@ -117,6 +130,15 @@ compute_evp_ssanom_pcnt <- function(cohort,
     variable <- evp_list[[i]]$variable
 
     join_cols <- purrr::set_names('concept_code', evp_list[[i]]$concept_field)
+
+    vocab_col <- evp_list[[i]]$vocabulary_field
+
+    if(!is.na(vocab_col)){
+
+      join_cols2 <- set_names('vocabulary_id', vocab_col)
+      join_cols <- join_cols %>% append(join_cols2)
+
+    }
 
     if(is.na(evp_list[[i]]$filter_logic)){
       domain_tbl <- cdm_tbl(evp_list[[i]]$domain_tbl) %>%

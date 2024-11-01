@@ -6,7 +6,7 @@
 \usage{
 evp_process_omop(
   cohort,
-  evp_variable_file = expectedvariablespresent::evp_variable_file,
+  evp_variable_file = expectedvariablespresent::evp_variable_file_omop,
   multi_or_single_site = "single",
   anomaly_or_exploratory = "exploratory",
   output_level = "row",
