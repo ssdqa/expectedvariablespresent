@@ -8,10 +8,11 @@
 #' @importFrom grDevices colors
 #' @importFrom graphics text
 #' @importFrom qicharts2 qic
+#' @importFrom rlang :=
 #'
 NULL
 
-#' *Single Site, Exporatory, No Time*
+#' *Single Site, Exporatory, Cross-Sectional*
 #'
 #' @param process_output the output provided by the `evp_process` function
 #' @param output_level the level of output to be displayed: `patient` or `row`
@@ -21,7 +22,7 @@ NULL
 #'         of the variables found in process_output
 #'
 #'
-evp_ss_exp_nt <- function(process_output,
+evp_ss_exp_cs <- function(process_output,
                           output_level,
                           facet = NULL){
 
@@ -60,7 +61,7 @@ evp_ss_exp_nt <- function(process_output,
 
 }
 
-#' * Multi Site, Exploratory, No Time *
+#' * Multi Site, Exploratory, Cross-Sectional*
 #'
 #' @param process_output the output provided by the `evp_process` function
 #' @param output_level the level of output to be displayed: `patient` or `row`
@@ -70,7 +71,7 @@ evp_ss_exp_nt <- function(process_output,
 #'         of the variables found in process_output at each of site
 #'
 
-evp_ms_exp_nt <- function(process_output,
+evp_ms_exp_cs <- function(process_output,
                           output_level,
                           facet = NULL){
 
@@ -106,7 +107,7 @@ evp_ms_exp_nt <- function(process_output,
   return(plot)
 }
 
-#' * Single Site, Anomaly, No Time *
+#' * Single Site, Anomaly, Cross-Sectional*
 #'
 #' @param process_output the output provided by the `evp_process` function
 #' @param facet columns the user would like to facet by
@@ -114,10 +115,8 @@ evp_ms_exp_nt <- function(process_output,
 #' @return a heat map displaying the Jaccard similarity index between each of the variables
 #'         any variables without a relationship and any self-to-self relationships are dropped
 #'
-#'.        if the user hovers over the heatmap, the co-occurrence count, jaccard score for the pair,
-#'         mean jaccard score for the variable, and variables will show
 #'
-evp_ss_anom_nt <- function(process_output,
+evp_ss_anom_cs <- function(process_output,
                            facet = NULL){
 
   var_ct <- process_output %>%
@@ -160,7 +159,7 @@ evp_ss_anom_nt <- function(process_output,
 
 }
 
-#' * Multi Site, Anomaly, No Time *
+#' * Multi Site, Anomaly, Cross-Sectional*
 #'
 #' @param process_output the output provided by the `evp_process` function
 #' @param output_level the level of output to be displayed: `patient` or `row`
@@ -176,7 +175,7 @@ evp_ss_anom_nt <- function(process_output,
 #'         and a dot plot showing each site's average standard deviation away from the mean
 #'         proportion is returned instead
 #'
-evp_ms_anom_nt<-function(process_output,
+evp_ms_anom_cs<-function(process_output,
                          output_level,
                          text_wrapping_char = 60){
 
@@ -277,17 +276,16 @@ evp_ms_anom_nt<-function(process_output,
 
 }
 
-#' * Single Site, Exploratory, Across Time *
+#' * Single Site, Exploratory, Longitudinal*
 #'
 #' @param process_output the output provided by the `evp_process` function
 #' @param output_level the level of output to be displayed: `patient` or `row`
 #' @param facet columns the user would like to facet by
 #'
 #' @return a line graph displaying the proportion of patients/rows for each variable
-#'         over the user-specified time period. On hover, the user can see the exact
-#'         proportion for that variable and time point
+#'         over the user-specified time period
 #'
-evp_ss_exp_at <- function(process_output,
+evp_ss_exp_la <- function(process_output,
                           output_level,
                           facet = NULL){
 
@@ -320,7 +318,7 @@ evp_ss_exp_at <- function(process_output,
 }
 
 
-#' * Multi Site, Exploratory, Across Time *
+#' * Multi Site, Exploratory, Longitudinal*
 #'
 #' @param process_output the output provided by the `evp_process` function
 #' @param output_level the level of output to be displayed: `patient` or `row`
@@ -328,10 +326,9 @@ evp_ss_exp_at <- function(process_output,
 #' @param facet columns the user would like to facet by
 #'
 #' @return a line graph displaying the proportion of patients/rows for each variable
-#'         & site over the user-specified time period. On hover, the user can see the exact
-#'         proportion for that site, variable, and time point
+#'         & site over the user-specified time period.
 #'
-evp_ms_exp_at <- function(process_output,
+evp_ms_exp_la <- function(process_output,
                           output_level,
                           filter_variable,
                           facet = NULL){
@@ -373,7 +370,7 @@ evp_ms_exp_at <- function(process_output,
 
 }
 
-#' * Single Site, Anomaly, Across Time *
+#' * Single Site, Anomaly, Longitudinal*
 #'
 #' @param process_output the output provided by the `evp_process` function
 #' @param output_level the level of output to be displayed: `patient` or `row`
@@ -387,7 +384,7 @@ evp_ms_exp_at <- function(process_output,
 #'         conducted and outliers are marked with red dots. the graphs representing
 #'         the data removed in the regression are also returned
 #'
-evp_ss_anom_at <- function(process_output,
+evp_ss_anom_la <- function(process_output,
                            output_level,
                            filter_variable,
                            facet = NULL){
@@ -473,8 +470,7 @@ evp_ss_anom_at <- function(process_output,
 }
 
 
-#' **Multi-Site Across Time Anomaly**
-#' Produces graphs showing Euclidean Distanctes
+#' **Multi-Site, Anomaly, Longitudinal**
 #'
 #' @param process_output output from `evp_process`
 #' @param output_level the level of output that should be shown (`person` or `row`)
@@ -490,7 +486,7 @@ evp_ss_anom_at <- function(process_output,
 #' THIS GRAPH SHOWS ONLY ONE VARIABLE AT A TIME!
 #'
 
-evp_ms_anom_at <- function(process_output,
+evp_ms_anom_la <- function(process_output,
                            output_level,
                            filter_variable) {
 

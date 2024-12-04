@@ -1,6 +1,13 @@
 
 #' Expected Variables Present
 #'
+#' This is a completeness module that will assess the presence of expected study variables and compute the distribution of
+#' these variables in the dataset. The user will provide the variables (`evp_variable_file`) of interest, including the name of
+#' the concept sets with the concepts used to define the variable. Sample versions of these inputs, both for OMOP and
+#' PCORnet, are included as data in the package and are accessible with `expectedvariablespresent::`.
+#' Results can optionally be stratified by site, age group, and/or time. This function is compatible with
+#' both the OMOP and the PCORnet CDMs based on the user's selection.
+#'
 #' @param cohort A dataframe with the cohort of patients for your study. Should include the columns:
 #' - `person_id`
 #' - `start_date`
@@ -41,9 +48,11 @@
 #' @param time_period when time = TRUE, this argument defines the distance between dates within the specified time period. defaults
 #'                    to `year`, but other time periods such as `month` or `week` are also acceptable
 #'
-#' @return a dataframe with patient/row counts & proportions for each concept set listed in `evp_concept_file`.
+#' @return a dataframe with patient/row counts & proportions for each concept set listed in `evp_variable_file`.
 #'         this output should then be used in the `evp_output` function to generate an appropriate
 #'         visualization
+#'
+#' @example inst/example-evp_process_output.R
 #'
 #' @export
 #'

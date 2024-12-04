@@ -21,11 +21,11 @@ test_that('single site, exploratory, no time', {
 
   expect_no_error(evp_output(process_output = tbl_test,
                              output_level = 'patient',
-                             output_function = 'evp_ss_exp_nt'))
+                             output_function = 'evp_ss_exp_cs'))
 
   expect_error(evp_output(process_output = tbl_test,
                           output_level = 'test',
-                          output_function = 'evp_ss_exp_nt'))
+                          output_function = 'evp_ss_exp_cs'))
 
 })
 
@@ -44,7 +44,7 @@ test_that('single site, anomaly detection, no time', {
                             'grp' = 'site')
 
   expect_no_error(evp_output(process_output = tbl_test,
-                             output_function = 'evp_ss_anom_nt'))
+                             output_function = 'evp_ss_anom_cs'))
 
 })
 
@@ -62,11 +62,11 @@ test_that('multi site, exploratory, no time', {
 
   expect_no_error(evp_output(process_output = tbl_test,
                              output_level = 'patient',
-                             output_function = 'evp_ms_exp_nt'))
+                             output_function = 'evp_ms_exp_cs'))
 
   expect_error(evp_output(process_output = tbl_test,
                           output_level = 'test',
-                          output_function = 'evp_ms_exp_nt'))
+                          output_function = 'evp_ms_exp_cs'))
 
 })
 
@@ -97,15 +97,15 @@ test_that('multi site, anomaly detection, no time', {
 
   expect_no_error(evp_output(process_output = tbl_test,
                              output_level = 'patient',
-                             output_function = 'evp_ms_anom_nt'))
+                             output_function = 'evp_ms_anom_cs'))
 
   expect_no_error(evp_output(process_output = tbl_test %>% dplyr::mutate(anomaly_yn = 'no outlier in group'),
                              output_level = 'patient',
-                             output_function = 'evp_ms_anom_nt'))
+                             output_function = 'evp_ms_anom_cs'))
 
   expect_error(evp_output(process_output = tbl_test,
                           output_level = 'test',
-                          output_function = 'evp_ms_anom_nt'))
+                          output_function = 'evp_ms_anom_cs'))
 
 })
 
@@ -125,11 +125,11 @@ test_that('single site, exploratory, across time', {
 
   expect_no_error(evp_output(process_output = tbl_test,
                              output_level = 'patient',
-                             output_function = 'evp_ss_exp_at'))
+                             output_function = 'evp_ss_exp_la'))
 
   expect_error(evp_output(process_output = tbl_test,
                           output_level = 'test',
-                          output_function = 'evp_ss_exp_nt'))
+                          output_function = 'evp_ss_exp_la'))
 
 })
 
@@ -150,12 +150,12 @@ test_that('multi site, exploratory, across time', {
 
   expect_no_error(evp_output(process_output = tbl_test,
                              output_level = 'patient',
-                             output_function = 'evp_ms_exp_at',
+                             output_function = 'evp_ms_exp_la',
                              filter_variable = 'test'))
 
   expect_error(evp_output(process_output = tbl_test,
                           output_level = 'test',
-                          output_function = 'evp_ms_exp_nt',
+                          output_function = 'evp_ms_exp_la',
                           filter_variable = 'test'))
 
 })
@@ -176,12 +176,12 @@ test_that('single site, anomaly detection, across time - year', {
 
   expect_no_error(evp_output(process_output = tbl_test,
                              output_level = 'patient',
-                             output_function = 'evp_ss_anom_at',
+                             output_function = 'evp_ss_anom_la',
                              filter_variable = 'test'))
 
   expect_error(evp_output(process_output = tbl_test,
                           output_level = 'test',
-                          output_function = 'evp_ss_anom_nt',
+                          output_function = 'evp_ss_anom_la',
                           filter_variable = 'test'))
 
 })
@@ -214,12 +214,12 @@ test_that('single site, anomaly detection, across time - month', {
 
   expect_no_error(evp_output(process_output = tbl_test,
                              output_level = 'patient',
-                             output_function = 'evp_ss_anom_at',
+                             output_function = 'evp_ss_anom_la',
                              filter_variable = 'test'))
 
   expect_error(evp_output(process_output = tbl_test,
                           output_level = 'test',
-                          output_function = 'evp_ss_anom_nt',
+                          output_function = 'evp_ss_anom_la',
                           filter_variable = 'test'))
 
 })
@@ -241,11 +241,11 @@ test_that('multi site, anomaly detection, across time', {
 
   expect_no_error(evp_output(process_output = tbl_test,
                              output_level = 'patient',
-                             output_function = 'evp_ms_anom_at',
+                             output_function = 'evp_ms_anom_la',
                              filter_variable = 'diagnoses'))
 
   expect_error(evp_output(process_output = tbl_test,
                           output_level = 'test',
-                          output_function = 'evp_ms_anom_nt',
+                          output_function = 'evp_ms_anom_la',
                           filter_variable = 'diagnoses'))
 })

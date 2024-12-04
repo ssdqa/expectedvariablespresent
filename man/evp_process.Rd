@@ -80,10 +80,61 @@ formatted as c(start date, end date) in yyyy-mm-dd date format}
 to \code{year}, but other time periods such as \code{month} or \code{week} are also acceptable}
 }
 \value{
-a dataframe with patient/row counts & proportions for each concept set listed in \code{evp_concept_file}.
+a dataframe with patient/row counts & proportions for each concept set listed in \code{evp_variable_file}.
 this output should then be used in the \code{evp_output} function to generate an appropriate
 visualization
 }
 \description{
-Expected Variables Present
+This is a completeness module that will assess the presence of expected study variables and compute the distribution of
+these variables in the dataset. The user will provide the variables (\code{evp_variable_file}) of interest, including the name of
+the concept sets with the concepts used to define the variable. Sample versions of these inputs, both for OMOP and
+PCORnet, are included as data in the package and are accessible with \verb{expectedvariablespresent::}.
+Results can optionally be stratified by site, age group, and/or time. This function is compatible with
+both the OMOP and the PCORnet CDMs based on the user's selection.
+}
+\examples{
+
+#' Source setup file
+source(system.file('setup.R', package = 'expectedvariablespresent'))
+
+#' Create in-memory RSQLite database using data in extdata directory
+conn <- mk_testdb_omop()
+
+#' Establish connection to database and generate internal configurations
+initialize_dq_session(session_name = 'evp_process_test',
+                      working_directory = getwd(),
+                      db_conn = conn,
+                      is_json = FALSE,
+                      file_subdirectory = system.file('extdata',
+                                        package = 'expectedvariablespresent'),
+                      cdm_schema = NA)
+
+#' Build mock study cohort
+cohort <- cdm_tbl('person') \%>\% dplyr::distinct(person_id) \%>\%
+  dplyr::mutate(start_date = as.Date(-5000), # RSQLite does not store date objects,
+                                      # hence the numerics
+                end_date = as.Date(15000),
+                site = ifelse(person_id \%in\% c(1:6), 'synth1', 'synth2'))
+
+#' Execute `evp_process` function
+#' This example will use the single site, exploratory, cross sectional
+#' configuration
+evp_process_example <- evp_process(cohort = cohort,
+                                   multi_or_single_site = 'single',
+                                   anomaly_or_exploratory = 'exploratory',
+                                   time = FALSE,
+                                   omop_or_pcornet = 'omop',
+                                   evp_variable_file = evp_variable_file_omop)
+
+evp_process_example
+
+#' Execute `evp_output` function
+#' The output was edited for a better indication of what the visualization will
+#' look like.
+#' The 0s are a limitation of the small sample data set used for this example
+evp_output_example <- evp_output(process_output = evp_process_example,
+                                 output_function = 'evp_ss_exp_cs',
+                                 output_level = 'patient')
+
+evp_output_example
 }

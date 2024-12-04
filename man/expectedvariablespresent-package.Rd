@@ -6,10 +6,26 @@
 \alias{expectedvariablespresent-package}
 \title{expectedvariablespresent: Expected Variables Present}
 \description{
-This package represents one of several modules in the broader SSDQA ecosystem. The Expected Variables Present module measures the presence of user-defined study variables within the source data.
+The Expected Variables Present module, part of the larger SSDQA ecosystem, checks for the presence of expected variables and presents a variety of distributions of these variables in the dataset. It allows investigators to visualize multiple variables for comparison and to show the co-occurrence of variables in the same patient.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/ssdqa/expectedvariablespresent}
+  \item \url{https://pedsnetapps.chop.edu/metadata/collections/9d9e267c-f506-4b67-95bb-e7c6c6a91835}
+  \item Report bugs at \url{https://github.com/ssdqa/expectedvariablespresent/issues}
+}
+
 }
 \author{
-\strong{Maintainer}: Kaleigh Wieand \email{wieandk@chop.edu}
+\strong{Maintainer}: Kaleigh Wieand \email{wieandk@chop.edu} (\href{https://orcid.org/0009-0003-7477-2601}{ORCID})
+
+Authors:
+\itemize{
+  \item Hanieh Razzaghi \email{razzaghih@chop.edu} (\href{https://orcid.org/0000-0001-5001-1590}{ORCID})
+  \item Kimberley Dickinson \email{dickinsokl@chop.edu} (\href{https://orcid.org/0000-0001-9523-056X}{ORCID})
+  \item Charles Bailey \email{baileyc@chop.edu} (\href{https://orcid.org/0000-0002-8967-0662}{ORCID})
+}
 
 }
 \keyword{internal}

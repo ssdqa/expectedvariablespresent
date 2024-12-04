@@ -12,7 +12,7 @@
 #' package and can be accessed with `ssdqa.gen::`
 #'
 #' @format ## `evp_variable_file_omop`
-#' A data frame with 2 rows and 6 columns
+#' A data frame with 6 columns
 #' \describe{
 #'   \item{variable}{A string label for the variable of interest}
 #'   \item{domain_tbl}{The name of the CDM table where the variable can be found}
@@ -40,7 +40,7 @@
 #' must be included.
 #'
 #' @format ## `evp_variable_file_pcornet`
-#' A data frame with 2 rows and 6 columns
+#' A data frame with 6 columns
 #' \describe{
 #'   \item{variable}{A string label for the variable of interest}
 #'   \item{domain_tbl}{The name of the CDM table where the variable can be found}

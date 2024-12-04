@@ -4,7 +4,7 @@ evp_variable_file_omop <- tibble::tibble(variable = c('Sample OMOP Variable'),
                                          domain_tbl = c('condition_occurrence'),
                                          concept_field = c('condition_concept_id'),
                                          date_field = c('condition_start_date'),
-                                         codeset_name = c('sample_codeset_dx'),
+                                         codeset_name = c('dx_hypertension'),
                                          filter_logic = c(NA))
 
 usethis::use_data(evp_variable_file_omop, overwrite = TRUE)
