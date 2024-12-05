@@ -4,7 +4,12 @@
 \alias{evp_output}
 \title{Expected Variables Present -- Output Generation}
 \usage{
-evp_output(process_output, output_function, output_level, filter_variable)
+evp_output(
+  process_output,
+  output_function,
+  output_level,
+  filter_variable = NULL
+)
 }
 \arguments{
 \item{process_output}{the output of the \code{evp_process} function}
@@ -64,12 +69,14 @@ evp_process_example <- evp_process(cohort = cohort,
 evp_process_example
 
 #' Execute `evp_output` function
-#' The output was edited for a better indication of what the visualization will
-#' look like.
-#' The 0s are a limitation of the small sample data set used for this example
 evp_output_example <- evp_output(process_output = evp_process_example,
                                  output_function = 'evp_ss_exp_cs',
                                  output_level = 'patient')
 
 evp_output_example
+
+#' Easily convert the graph into an interactive ggiraph or plotly object with
+#' `make_interactive_ssdqa()`
+
+make_interactive_ssdqa(evp_output_example)
 }

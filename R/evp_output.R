@@ -23,7 +23,7 @@
 evp_output <- function(process_output,
                        output_function,
                        output_level,
-                       filter_variable
+                       filter_variable = NULL
                        # facet = NULL
                        ){
 
