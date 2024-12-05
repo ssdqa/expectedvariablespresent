@@ -1,5 +1,5 @@
 Package: expectedvariablespresent
-Title: Expected Variables Present
+Title: Evaluate Distribution of Expected Study Variables
 Version: 0.0.0.9000
 Authors@R: 
       c(person("Hanieh", "Razzaghi", email = "razzaghih@chop.edu", role = c("aut"),
