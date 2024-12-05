@@ -205,8 +205,10 @@ evp_ms_anom_cs<-function(process_output,
 
   if(nrow(check_n) > 0){
 
-    plt<-ggplot(dat_to_plot %>% mutate(anomaly_yn = ifelse(anomaly_yn == 'no outlier in group',
-                                                           'not outlier', anomaly_yn)),
+    dat_to_plot <- dat_to_plot %>% mutate(anomaly_yn = ifelse(anomaly_yn == 'no outlier in group',
+                                                              'not outlier', anomaly_yn))
+
+    plt<-ggplot(dat_to_plot,
                 aes(x=site, y=variable, text=text, color=!!sym(comparison_col)))+
       geom_point_interactive(aes(size=mean_val,shape=anomaly_yn, tooltip = text))+
       geom_point_interactive(data = dat_to_plot %>% filter(anomaly_yn == 'not outlier'),
