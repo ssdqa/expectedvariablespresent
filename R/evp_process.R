@@ -106,8 +106,8 @@ evp_process <- function(cohort,
                                     p_value = p_value)
   }else{cli::cli_abort('Invalid argument for {.code omop_or_pcornet}: this function is only compatible with {.code omop} or {.code pcornet}')}
 
-  cli::cli_inform(str_wrap(paste0('Based on your chosen parameters, we recommend using the following
-                       output function in evp_output: ', output_type, '.')))
+  cli::cli_inform(paste0(col_green('Based on your chosen parameters, we recommend using the following
+                       output function in evp_output: '), col_blue(style_bold(output_type,'.'))))
 
   return(evp_rslt)
 

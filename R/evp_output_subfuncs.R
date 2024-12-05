@@ -405,7 +405,7 @@ evp_ss_anom_la <- function(process_output,
     title <- 'Patients'
   }else(cli::cli_abort('Please choose an acceptable output level: {.code patient} or {.code row}'))
 
-  time_inc <- process_output %>% distinct(time_increment) %>% pull()
+  time_inc <- process_output %>% filter(!is.na(time_increment)) %>% distinct(time_increment) %>% pull()
 
   if(time_inc == 'year'){
 
