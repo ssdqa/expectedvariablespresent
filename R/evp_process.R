@@ -54,6 +54,8 @@
 #'
 #' @example inst/example-evp_process_output.R
 #'
+#' @import cli
+#'
 #' @export
 #'
 evp_process <- function(cohort,
