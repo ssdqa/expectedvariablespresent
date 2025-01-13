@@ -187,8 +187,9 @@ compute_evp_ssanom_pcnt <- function(cohort,
 
     grp <- facet_list[[i]] %>% distinct(facet_col) %>% pull()
 
-    jaccards <- compute_jaccard_pcnt(jaccard_input_tbl = facet_list[[i]],
-                                     var_col = 'variable') %>%
+    jaccards <- compute_jaccard(jaccard_input_tbl = facet_list[[i]],
+                                var_col = 'variable',
+                                omop_or_pcornet = 'pcornet') %>%
       mutate(grp = grp)
 
     jacc_list[[i]] <- jaccards
