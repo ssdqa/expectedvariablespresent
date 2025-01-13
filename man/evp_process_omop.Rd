@@ -2,7 +2,7 @@
 % Please edit documentation in R/evp_process_omop.R
 \name{evp_process_omop}
 \alias{evp_process_omop}
-\title{EVP Process -- OMOP}
+\title{Expected Variables Present -- OMOP}
 \usage{
 evp_process_omop(
   cohort,
@@ -76,5 +76,5 @@ this output should then be used in the \code{evp_output} function to generate an
 visualization
 }
 \description{
-EVP Process -- OMOP
+Expected Variables Present -- OMOP
 }

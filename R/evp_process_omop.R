@@ -1,5 +1,5 @@
 
-#' EVP Process -- OMOP
+#' Expected Variables Present -- OMOP
 #'
 #' @param cohort A dataframe with the cohort of patients for your study. Should include the columns:
 #' - `person_id`
@@ -74,7 +74,8 @@ evp_process_omop <- function(cohort,
 
   # Prep cohort
 
-  cohort_prep <- prepare_cohort(cohort_tbl = cohort_filter, age_groups = age_groups, codeset = NULL) %>%
+  cohort_prep <- prepare_cohort(cohort_tbl = cohort_filter, age_groups = age_groups, codeset = NULL,
+                                omop_or_pcornet = 'omop') %>%
     group_by(!!! syms(grouped_list))
 
   # Execute function

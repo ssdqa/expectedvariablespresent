@@ -4,7 +4,7 @@
 \name{expectedvariablespresent-package}
 \alias{expectedvariablespresent}
 \alias{expectedvariablespresent-package}
-\title{expectedvariablespresent: Expected Variables Present}
+\title{expectedvariablespresent: Evaluate Distribution of Expected Study Variables}
 \description{
 The Expected Variables Present module, part of the larger SSDQA ecosystem, checks for the presence of expected variables and presents a variety of distributions of these variables in the dataset. It allows investigators to visualize multiple variables for comparison and to show the co-occurrence of variables in the same patient.
 }
@@ -12,7 +12,7 @@ The Expected Variables Present module, part of the larger SSDQA ecosystem, check
 Useful links:
 \itemize{
   \item \url{https://github.com/ssdqa/expectedvariablespresent}
-  \item \url{https://pedsnetapps.chop.edu/metadata/collections/9d9e267c-f506-4b67-95bb-e7c6c6a91835}
+  \item \url{https://pedsnetapps.chop.edu/metadata/handle/20.500.14642/27}
   \item Report bugs at \url{https://github.com/ssdqa/expectedvariablespresent/issues}
 }
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/evp_process_pcornet.R
 \name{evp_process_pcornet}
 \alias{evp_process_pcornet}
-\title{EVP Process -- PCORnet}
+\title{Expected Variables Present -- PCORnet}
 \usage{
 evp_process_pcornet(
   cohort,
@@ -78,5 +78,5 @@ this output should then be used in the \code{evp_output} function to generate an
 visualization
 }
 \description{
-EVP Process -- PCORnet
+Expected Variables Present -- PCORnet
 }
