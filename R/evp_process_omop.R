@@ -140,7 +140,7 @@ evp_process_omop <- function(cohort,
 
       var_col <- ifelse(output_level == 'row', 'prop_row_variable', 'prop_pt_variable')
 
-      evp_tbl_final <- anomalize_ss_anom_at(fot_input_tbl = evp_tbl,
+      evp_tbl_final <- anomalize_ss_anom_la(fot_input_tbl = evp_tbl,
                                             time_var = 'time_start',
                                             grp_vars = 'variable',
                                             var_col = var_col)
