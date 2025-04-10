@@ -41,7 +41,7 @@
 #'         this output should then be used in the `evp_output` function to generate an appropriate
 #'         visualization
 #'
-#' @import ssdqa.gen
+#' @import squba.gen
 #' @importFrom stringr str_wrap
 #'
 evp_process_omop <- function(cohort,

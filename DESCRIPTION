@@ -10,7 +10,7 @@ Authors@R:
              comment = c(ORCID = "0000-0001-9523-056X")),
       person("Charles", "Bailey", email = "baileyc@chop.edu", role = c("aut"),
              comment = c(ORCID = "0000-0002-8967-0662")))
-Description: The Expected Variables Present module, part of the larger SSDQA ecosystem, checks for the presence 
+Description: The Expected Variables Present module, part of the larger SQUBA ecosystem, checks for the presence 
     of expected variables and presents a variety of distributions of these variables in the dataset. It allows 
     investigators to visualize multiple variables for comparison and to show the co-occurrence of variables in the 
     same patient.
@@ -33,10 +33,10 @@ Imports:
     stringr (>= 1.5.1),
     tidyr (>= 1.3.1),
     timetk (>= 2.9.0)
-Remotes: PEDSnet/argos, ssdqa/ssdqa.gen
+Remotes: PEDSnet/argos, ssdqa/squba.gen
 Depends: 
     argos,
-    ssdqa.gen,
+    squba.gen,
     R (>= 2.10)
 LazyData: true
 Suggests: 

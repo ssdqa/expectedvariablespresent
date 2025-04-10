@@ -6,7 +6,7 @@
 \alias{expectedvariablespresent-package}
 \title{expectedvariablespresent: Evaluate Distribution of Expected Study Variables}
 \description{
-The Expected Variables Present module, part of the larger SSDQA ecosystem, checks for the presence of expected variables and presents a variety of distributions of these variables in the dataset. It allows investigators to visualize multiple variables for comparison and to show the co-occurrence of variables in the same patient.
+The Expected Variables Present module, part of the larger SQUBA ecosystem, checks for the presence of expected variables and presents a variety of distributions of these variables in the dataset. It allows investigators to visualize multiple variables for comparison and to show the co-occurrence of variables in the same patient.
 }
 \seealso{
 Useful links:

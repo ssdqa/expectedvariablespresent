@@ -136,7 +136,7 @@ evp_output_example <- evp_output(process_output = evp_process_example,
 evp_output_example
 
 #' Easily convert the graph into an interactive ggiraph or plotly object with
-#' `make_interactive_ssdqa()`
+#' `make_interactive_squba()`
 
-make_interactive_ssdqa(evp_output_example)
+make_interactive_squba(evp_output_example)
 }

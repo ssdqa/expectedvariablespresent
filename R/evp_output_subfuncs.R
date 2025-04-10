@@ -48,7 +48,7 @@ evp_ss_exp_cs <- function(process_output,
     ggplot(aes(y = variable, x = !!sym(prop), fill = variable)) +
     geom_col(show.legend = FALSE) +
     facet_wrap((facet)) +
-    scale_fill_ssdqa() +
+    scale_fill_squba() +
     theme_minimal() +
     labs(x = paste0('Proportion ', title),
          y = 'Variable',
@@ -94,7 +94,7 @@ evp_ms_exp_cs <- function(process_output,
     geom_text(aes(label = !!sym(prop), color = colors), #size = 6,
               show.legend = FALSE) +
     scale_color_manual(values = c('white', 'black')) +
-    scale_fill_ssdqa(palette = 'diverging', discrete = FALSE) +
+    scale_fill_squba(palette = 'diverging', discrete = FALSE) +
     theme_minimal() +
     labs(title = paste0('Proportion ', title, ' per Variable & Site'),
          x = 'Site',
@@ -145,7 +145,7 @@ evp_ss_anom_cs <- function(process_output,
                                                '\n', 'co-occurrence = ', cocount,
                                                '\n','jaccard sim = ',jaccard_index
                                                ))) +
-    scale_fill_ssdqa(palette = 'diverging', discrete = FALSE) +
+    scale_fill_squba(palette = 'diverging', discrete = FALSE) +
     facet_wrap((facet)) +
     labs(title = 'Co-Occurrence of Variables',
          x = 'variable1',
@@ -213,7 +213,7 @@ evp_ms_anom_cs<-function(process_output,
       geom_point_interactive(aes(size=mean_val,shape=anomaly_yn, tooltip = text))+
       geom_point_interactive(data = dat_to_plot %>% filter(anomaly_yn == 'not outlier'),
                              aes(size=mean_val,shape=anomaly_yn, tooltip = text), shape = 1, color = 'black')+
-      scale_color_ssdqa(palette = 'diverging', discrete = FALSE) +
+      scale_color_squba(palette = 'diverging', discrete = FALSE) +
       scale_shape_manual(values=c(19,8))+
       scale_y_discrete(labels = function(x) str_wrap(x, width = text_wrapping_char)) +
       theme_minimal() +
@@ -236,7 +236,7 @@ evp_ms_anom_cs<-function(process_output,
                                    tooltip = text)) +
       geom_tile_interactive() +
       theme_minimal() +
-      scale_fill_ssdqa(discrete = FALSE, palette = 'diverging') +
+      scale_fill_squba(discrete = FALSE, palette = 'diverging') +
       labs(y = 'Variable',
            x = 'Site',
            fill = 'Proportion')
@@ -258,7 +258,7 @@ evp_ms_anom_cs<-function(process_output,
                                       tooltip = tooltip)) +
       geom_point_interactive(show.legend = FALSE) +
       theme_minimal() +
-      scale_color_ssdqa() +
+      scale_color_squba() +
       geom_hline(yintercept = 0, linetype = 'solid') +
       labs(title = 'Average Standard Deviation per Site',
            y = 'Average Standard Deviation',
@@ -304,7 +304,7 @@ evp_ss_exp_la <- function(process_output,
   p <- process_output %>%
     ggplot(aes(y = !!sym(prop), x = time_start, color = variable)) +
     geom_line() +
-    scale_color_ssdqa() +
+    scale_color_squba() +
     facet_wrap((facet)) +
     theme_minimal() +
     labs(title = paste0('Proportion ', title, ' Over Time'),
@@ -357,7 +357,7 @@ evp_ms_exp_la <- function(process_output,
     filter(variable %in% filter_variable) %>%
     ggplot(aes(y = !!sym(prop), x = time_start, color = site)) +
     geom_line() +
-    scale_color_ssdqa() +
+    scale_color_squba() +
     facet_wrap((facet)) +
     theme_minimal() +
     labs(title = paste0('Proportion ', title, ' Over Time'),
@@ -426,11 +426,11 @@ evp_ss_anom_la <- function(process_output,
 
    new_pp <- ggplot(op_dat,aes(x,y)) +
      geom_ribbon(aes(ymin = lcl,ymax = ucl), fill = "lightgray",alpha = 0.4) +
-     geom_line(colour = ssdqa_colors_standard[[12]], linewidth = .5) +
+     geom_line(colour = squba_colors_standard[[12]], linewidth = .5) +
      geom_line(aes(x,cl)) +
-     geom_point(colour = ssdqa_colors_standard[[6]] , fill = ssdqa_colors_standard[[6]], size = 1) +
-     geom_point(data = subset(op_dat, y >= ucl), color = ssdqa_colors_standard[[3]], size = 2) +
-     geom_point(data = subset(op_dat, y <= lcl), color = ssdqa_colors_standard[[3]], size = 2) +
+     geom_point(colour = squba_colors_standard[[6]] , fill = squba_colors_standard[[6]], size = 1) +
+     geom_point(data = subset(op_dat, y >= ucl), color = squba_colors_standard[[3]], size = 2) +
+     geom_point(data = subset(op_dat, y <= lcl), color = squba_colors_standard[[3]], size = 2) +
      facet_wrap(~facet1, scales = 'free_y', ncol = 2) +
      ggtitle(label = paste0('Control Chart: Proportion of ', title, ' per Variable')) +
      labs(x = 'Time',
@@ -528,7 +528,7 @@ evp_ms_anom_la <- function(process_output,
     geom_smooth(se=TRUE,alpha=0.1,linewidth=0.5, formula = y ~ x) +
     theme_minimal() +
     #theme(axis.text.x = element_text(angle = 30, vjust = 1, hjust=1)) +
-    scale_color_ssdqa() +
+    scale_color_squba() +
     labs(y = 'Proportion (Loess)',
          x = 'Time',
          title = paste0('Smoothed Proportion of ', filter_variable, ' Across Time'))
@@ -540,7 +540,7 @@ evp_ms_anom_la <- function(process_output,
     geom_line(linewidth=0.2) +
     theme_minimal() +
     #theme(axis.text.x = element_text(angle = 30, vjust = 1, hjust=1)) +
-    scale_color_ssdqa() +
+    scale_color_squba() +
     labs(x = 'Time',
          y = 'Proportion',
          title = paste0('Proportion of ', filter_variable, ' Across Time'))
@@ -559,7 +559,7 @@ evp_ms_anom_la <- function(process_output,
     coord_radial(r.axis.inside = FALSE, rotate.angle = TRUE) +
     guides(theta = guide_axis_theta(angle = 0)) +
     theme_minimal() +
-    scale_fill_ssdqa(palette = 'diverging', discrete = FALSE) +
+    scale_fill_squba(palette = 'diverging', discrete = FALSE) +
     # theme(legend.position = 'bottom',
     #       legend.text = element_text(angle = 45, vjust = 0.9, hjust = 1),
     #       axis.text.x = element_text(face = 'bold')) +
