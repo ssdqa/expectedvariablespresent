@@ -12,7 +12,7 @@ The Expected Variables Present module, part of the larger SQUBA ecosystem, check
 Useful links:
 \itemize{
   \item \url{https://github.com/ssdqa/expectedvariablespresent}
-  \item \url{https://pedsnetapps.chop.edu/metadata/handle/20.500.14642/27}
+  \item \url{https://pedsnet.org/metadata/handle/20.500.14642/27}
   \item Report bugs at \url{https://github.com/ssdqa/expectedvariablespresent/issues}
 }
 

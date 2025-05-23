@@ -19,64 +19,64 @@ evp_process(
 )
 }
 \arguments{
-\item{cohort}{A dataframe with the cohort of patients for your study. Should include the columns:
+\item{cohort}{\emph{tabular input} | A dataframe with the cohort of patients for your study. Should include the columns:
 \itemize{
-\item \code{person_id}
-\item \code{start_date}
-\item \code{end_date}
-\item \code{site}
+\item \code{person_id} / \code{patid} | \emph{integer} / \emph{character}
+\item \code{start_date} | \emph{date}
+\item \code{end_date} | \emph{date}
+\item \code{site} | \emph{character}
 }}
 
-\item{omop_or_pcornet}{Option to run the function using the OMOP or PCORnet CDM as the default CDM
+\item{omop_or_pcornet}{\emph{string} | Option to run the function using the OMOP or PCORnet CDM as the default CDM
 \itemize{
 \item \code{omop}: run the \code{\link[=evp_process_omop]{evp_process_omop()}} function against an OMOP CDM instance
 \item \code{pcornet}: run the \code{\link[=evp_process_pcornet]{evp_process_pcornet()}} function against a PCORnet CDM instance
 }}
 
-\item{evp_variable_file}{CSV file with information about each of the variables that should be
+\item{evp_variable_file}{\emph{tabular input} | CSV file with information about each of the variables that should be
 examined in the function. contains the following columns:
 \itemize{
-\item \code{variable} a label for the variable captured by the associated codeset
-\item \code{default_tbl} CDM table where data related to the codeset is found
-\item \code{concept_field} concept_id field with codes from the associated codeset
-\item \code{date_field} a date field in the \code{default_tbl} that should be used for over time analyses
-\item \code{vocabulary_field} PCORNET ONLY; field in the \code{default_tbl} that defines the vocabulary type of the concept (i.e. dx_type)
+\item \code{variable} | \emph{character} | a label for the variable captured by the associated codeset
+\item \code{default_tbl} | \emph{character} | CDM table where data related to the codeset is found
+\item \code{concept_field} | \emph{character} | concept_id field with codes from the associated codeset
+\item \code{date_field} | \emph{character} | a date field in the \code{default_tbl} that should be used for over time analyses
+\item \code{vocabulary_field} | \emph{character} | PCORNET ONLY; field in the \code{default_tbl} that defines the vocabulary type of the concept (i.e. dx_type)
 if this field is used, the codeset should have a \code{vocabulary_id} column that defines the appropriate vocabularies for each concept
-\item \code{codeset_name} the name of the codeset file; DO NOT include the file extension
-\item \code{filter_logic} a string indicating filter logic that should be applied to achieve the desired variable; optional
+\item \code{codeset_name} | \emph{character} | the name of the codeset file; DO NOT include the file extension
+\item \code{filter_logic} | \emph{character} | a string indicating filter logic that should be applied to achieve the desired variable; optional
 }}
 
-\item{multi_or_single_site}{Option to run the function on a single vs multiple sites
+\item{multi_or_single_site}{\emph{string} | Option to run the function on a single vs multiple sites
 \itemize{
 \item \code{single}: run the function for a single site
 \item \code{multi}: run the function for multiple sites
 }}
 
-\item{anomaly_or_exploratory}{Option to conduct an exploratory or anomaly detection analysis. Exploratory analyses give a high
+\item{anomaly_or_exploratory}{\emph{string} | Option to conduct an exploratory or anomaly detection analysis. Exploratory analyses give a high
 level summary of the data to examine the fact representation within the cohort. Anomaly detection
 analyses are specialized to identify outliers within the cohort.}
 
-\item{output_level}{the level of output to use for an AUC computation, exclusive to \code{ms_anom_at}; either \code{patient} or \code{row} --
-defaults to \code{row}}
+\item{output_level}{\emph{string} | the level of output to use for an euclidean distance computation, exclusive to \code{ms_anom_la};
+either \code{patient} or \code{row} -- defaults to \code{row}}
 
-\item{age_groups}{If you would like to stratify the results by age group,  create a table or CSV file with the following
+\item{age_groups}{\emph{tabular input} | If you would like to stratify the results by age group,  create a table or CSV file with the following
 columns and include it as the \code{age_groups} function parameter:
 \itemize{
-\item \code{min_age}: the minimum age for the group (i.e. 10)
-\item \code{max_age}: the maximum age for the group (i.e. 20)
-\item \code{group}: a string label for the group (i.e. 10-20, Young Adult, etc.)
+\item \code{min_age} | \emph{integer} | the minimum age for the group (i.e. 10)
+\item \code{max_age} | \emph{integer} | the maximum age for the group (i.e. 20)
+\item \code{group} | \emph{character} | a string label for the group (i.e. 10-20, Young Adult, etc.)
 }
 
 If you would \emph{not} like to stratify by age group, leave the argument as NULL}
 
-\item{p_value}{the p value to be used as a threshold in the multi-site anomaly detection analysis}
+\item{p_value}{\emph{numeric} | the p value to be used as a threshold in the multi-site anomaly detection analysis}
 
-\item{time}{a logical that tells the function whether you would like to look at the output over time}
+\item{time}{\emph{boolean} | a logical that tells the function whether you would like to look at the output over time}
 
-\item{time_span}{when time = TRUE, this argument defines the start and end dates for the time period of interest. should be
+\item{time_span}{\emph{vector - length 2} | when time = TRUE, this argument defines the start and end dates for the time period of interest. should be
 formatted as c(start date, end date) in yyyy-mm-dd date format}
 
-\item{time_period}{when time = TRUE, this argument defines the distance between dates within the specified time period. defaults
+\item{time_period}{\emph{string} | when time = TRUE, this argument defines the distance between dates within the specified time period. defaults
 to \code{year}, but other time periods such as \code{month} or \code{week} are also acceptable}
 }
 \value{
@@ -130,7 +130,6 @@ evp_process_example
 
 #' Execute `evp_output` function
 evp_output_example <- evp_output(process_output = evp_process_example,
-                                 output_function = 'evp_ss_exp_cs',
                                  output_level = 'patient')
 
 evp_output_example

@@ -4,22 +4,14 @@
 \alias{evp_output}
 \title{Expected Variables Present -- Output Generation}
 \usage{
-evp_output(
-  process_output,
-  output_function,
-  output_level,
-  filter_variable = NULL
-)
+evp_output(process_output, output_level, filter_variable = NULL)
 }
 \arguments{
-\item{process_output}{the output of the \code{evp_process} function}
+\item{process_output}{\emph{tabular input} | the output of the \code{evp_process} function}
 
-\item{output_function}{the name of the output function that should be used provided in the \code{parameter_summary} csv
-file that is output to the provided results folder after running the \code{evp_process} function}
+\item{output_level}{\emph{string} | the type of counts the output should summarise -- either \code{patient} or \code{row}}
 
-\item{output_level}{the type of counts the output should summarise -- either \code{patient} or \code{row}}
-
-\item{filter_variable}{for \code{evp_ms_anom_la}, \code{evp_ms_exp_la}, \code{evp_ss_anom_la}, the single variable that
+\item{filter_variable}{\emph{string} | for \code{ms_anom_la}, \code{ms_exp_la}, \code{ss_anom_la}, the single variable that
 should be displayed in the output; can be any of the variables listed in the \code{evp_process} output}
 }
 \value{
@@ -70,7 +62,6 @@ evp_process_example
 
 #' Execute `evp_output` function
 evp_output_example <- evp_output(process_output = evp_process_example,
-                                 output_function = 'evp_ss_exp_cs',
                                  output_level = 'patient')
 
 evp_output_example

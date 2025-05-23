@@ -6,11 +6,9 @@
 #' be adjusted by the user after the graph has been output using `+ theme()`. Most graphs can
 #' also be made interactive using `make_interactive_squba()`
 #'
-#' @param process_output the output of the `evp_process` function
-#' @param output_function the name of the output function that should be used provided in the `parameter_summary` csv
-#'                        file that is output to the provided results folder after running the `evp_process` function
-#' @param output_level the type of counts the output should summarise -- either `patient` or `row`
-#' @param filter_variable for `evp_ms_anom_la`, `evp_ms_exp_la`, `evp_ss_anom_la`, the single variable that
+#' @param process_output *tabular input* | the output of the `evp_process` function
+#' @param output_level *string* | the type of counts the output should summarise -- either `patient` or `row`
+#' @param filter_variable *string* | for `ms_anom_la`, `ms_exp_la`, `ss_anom_la`, the single variable that
 #' should be displayed in the output; can be any of the variables listed in the `evp_process` output
 #'
 #' @return a graph to visualize the results from `evp_process` based on the parameters provided; see documentation
@@ -21,11 +19,13 @@
 #' @export
 #'
 evp_output <- function(process_output,
-                       output_function,
                        output_level,
                        filter_variable = NULL
                        # facet = NULL
                        ){
+
+  ## extract output function
+  output_function <- process_output %>% collect() %>% ungroup() %>% distinct(output_function) %>% pull()
 
   if('age_grp' %in% colnames(process_output)){facet <- 'age_grp'}else{facet <- NULL}
 

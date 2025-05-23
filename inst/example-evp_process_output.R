@@ -35,7 +35,6 @@ evp_process_example
 
 #' Execute `evp_output` function
 evp_output_example <- evp_output(process_output = evp_process_example,
-                                 output_function = 'evp_ss_exp_cs',
                                  output_level = 'patient')
 
 evp_output_example
