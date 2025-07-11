@@ -70,6 +70,20 @@ compute_evp_omop <- function(cohort,
                   variable_row_ct = n()) %>% collect()
     }
 
+    if(nrow(fact_pts) < 1){
+      if(!time){
+        fact_pts <- tibble('variable_pt_ct' = 0,
+                           'variable_row_ct' = 0,
+                           'site' = total_pts$site)
+      }else{
+        fact_pts <- tibble('variable_pt_ct' = 0,
+                           'variable_row_ct' = 0,
+                           'site' = total_pts$site,
+                           'time_start' = total_pts$time_start,
+                           'time_increment' = total_pts$time_increment)
+      }
+    }
+
     final_tbl <- total_pts %>%
       left_join(fact_pts) %>%
       mutate(prop_pt_variable = round(as.numeric(variable_pt_ct/total_pt_ct), 3),
