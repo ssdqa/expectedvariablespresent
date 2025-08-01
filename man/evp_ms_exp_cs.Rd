@@ -6,12 +6,23 @@
 \item Multi Site, Exploratory, Cross-Sectional*
 }}
 \usage{
-evp_ms_exp_cs(process_output, output_level, facet = NULL)
+evp_ms_exp_cs(
+  process_output,
+  output_level,
+  large_n = FALSE,
+  large_n_sites = NULL,
+  facet = NULL
+)
 }
 \arguments{
 \item{process_output}{the output provided by the \code{evp_process} function}
 
 \item{output_level}{the level of output to be displayed: \code{patient} or \code{row}}
+
+\item{large_n}{a boolean indicating whether the large N visualization, intended for a high
+volume of sites, should be used; defaults to FALSE}
+
+\item{large_n_sites}{a vector of site names that can optionally generate a filtered visualization}
 
 \item{facet}{columns the user would like to facet by}
 }

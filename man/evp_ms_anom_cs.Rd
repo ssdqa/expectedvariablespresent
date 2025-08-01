@@ -6,12 +6,23 @@
 \item Multi Site, Anomaly, Cross-Sectional*
 }}
 \usage{
-evp_ms_anom_cs(process_output, output_level, text_wrapping_char = 60)
+evp_ms_anom_cs(
+  process_output,
+  output_level,
+  large_n = FALSE,
+  large_n_sites = NULL,
+  text_wrapping_char = 60
+)
 }
 \arguments{
 \item{process_output}{the output provided by the \code{evp_process} function}
 
 \item{output_level}{the level of output to be displayed: \code{patient} or \code{row}}
+
+\item{large_n}{a boolean indicating whether the large N visualization, intended for a high
+volume of sites, should be used; defaults to FALSE}
+
+\item{large_n_sites}{a vector of site names that can optionally generate a filtered visualization}
 
 \item{text_wrapping_char}{integer value indicating the point at which axis
 label text should begin to wrap}

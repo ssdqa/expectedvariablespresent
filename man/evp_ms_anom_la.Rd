@@ -4,7 +4,13 @@
 \alias{evp_ms_anom_la}
 \title{\strong{Multi-Site, Anomaly, Longitudinal}}
 \usage{
-evp_ms_anom_la(process_output, output_level, filter_variable)
+evp_ms_anom_la(
+  process_output,
+  output_level,
+  filter_variable,
+  large_n = FALSE,
+  large_n_sites = NULL
+)
 }
 \arguments{
 \item{process_output}{output from \code{evp_process}}
@@ -12,6 +18,11 @@ evp_ms_anom_la(process_output, output_level, filter_variable)
 \item{output_level}{the level of output that should be shown (\code{person} or \code{row})}
 
 \item{filter_variable}{the variable that should be used to generate output}
+
+\item{large_n}{a boolean indicating whether the large N visualization, intended for a high
+volume of sites, should be used; defaults to FALSE}
+
+\item{large_n_sites}{a vector of site names that can optionally generate a filtered visualization}
 }
 \value{
 three graphs:

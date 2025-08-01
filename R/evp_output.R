@@ -10,6 +10,9 @@
 #' @param output_level *string* | the type of counts the output should summarise -- either `patient` or `row`
 #' @param filter_variable *string* | for `ms_anom_la`, `ms_exp_la`, `ss_anom_la`, the single variable that
 #' should be displayed in the output; can be any of the variables listed in the `evp_process` output
+#' @param large_n *boolean* | for multi site analyses, a boolean indicating whether the large N visualization, intended for a high
+#'                volume of sites, should be used; defaults to FALSE
+#' @param large_n_sites *vector* | when large_n is TRUE, a vector of site names that can optionally generate a filtered visualization
 #'
 #' @return a graph to visualize the results from `evp_process` based on the parameters provided; see documentation
 #'         for individual subfunctions for details on specific output
@@ -20,8 +23,9 @@
 #'
 evp_output <- function(process_output,
                        output_level,
-                       filter_variable = NULL
-                       # facet = NULL
+                       filter_variable = NULL,
+                       large_n = FALSE,
+                       large_n_sites = NULL
                        ){
 
   ## extract output function
