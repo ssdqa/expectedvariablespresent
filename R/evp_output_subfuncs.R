@@ -376,18 +376,29 @@ evp_ms_anom_cs<-function(process_output,
       ungroup() %>%
       select(-anomaly_yn)
 
+    # clps_vals <- process_output %>%
+    #   group_by(variable) %>%
+    #   summarise(valcol = list(!!sym(comparison_col)))
+
     tbl <- process_output %>%
-      distinct(variable, mean_val, sd_val, median_val, mad_val) %>%
+      group_by(variable) %>%
+      mutate(iqr_val = stats::IQR(!!sym(comparison_col))) %>%
+      ungroup() %>%
+      distinct(variable, mean_val, sd_val, median_val, iqr_val) %>%
+      # left_join(clps_vals) %>%
       left_join(nsite_anom) %>%
       left_join(far_site) %>%
       left_join(close_site) %>%
       gt::gt() %>%
       tab_header('Large N Anomaly Detection Summary Table') %>%
+      # gtExtras::gt_plt_dist(column = valcol,
+      #                       type = 'boxplot', same_limit = FALSE) %>%
       cols_label(variable = 'Variable',
+                 # valcol = 'Value Distribution',
                  mean_val = 'Mean',
                  sd_val = 'Standard Deviation',
                  median_val = 'Median',
-                 mad_val = 'Median Absolute Deviation',
+                 iqr_val = 'IQR',
                  site_w_anom = 'No. Sites w/ Anomaly',
                  farthest_site = 'Site(s) Farthest from Mean',
                  closest_site = 'Site(s) Closest to Mean') %>%
@@ -395,7 +406,7 @@ evp_ms_anom_cs<-function(process_output,
                   columns = site_w_anom) %>%
       sub_missing(missing_text = '--',
                   columns = c(farthest_site, closest_site)) %>%
-      fmt_number(columns = c(mean_val, median_val, sd_val, mad_val),
+      fmt_number(columns = c(mean_val, median_val, sd_val, iqr_val),
                  decimals = 3) %>%
       opt_stylize(style = 2)
 
@@ -802,16 +813,37 @@ evp_ms_anom_la <- function(process_output,
            title = paste0('Proportion of ', filter_variable, ' Across Time'),
            subtitle = 'Ribbon boundaries are IQR')
 
-    t <- dat_to_plot %>%
-      distinct(dist_eucl_mean) %>%
-      ggplot(aes(x = dist_eucl_mean)) +
-      geom_boxplot(width = 0.2) +
-      theme_minimal() +
-      theme(axis.text.y = element_blank()) +
-      scale_fill_squba(palette = 'diverging', discrete = FALSE) +
-      labs(x ='Euclidean Distance',
-           y = '',
-           title = paste0('Distribution of Euclidean Distances'))
+    if(is.null(large_n_sites)){
+
+      t <- dat_to_plot %>%
+        distinct(variable, dist_eucl_mean) %>%
+        ggplot(aes(x = dist_eucl_mean, y = variable)) +
+        geom_boxplot() +
+        geom_point(color = 'gray',
+                   alpha = 0.75) +
+        theme_minimal() +
+        theme(axis.text.y = element_blank(),
+              legend.title = element_blank()) +
+        scale_fill_squba(palette = 'diverging', discrete = FALSE) +
+        labs(x ='Euclidean Distance',
+             y = '',
+             title = paste0('Distribution of Euclidean Distances'))
+
+    }else{
+      t <- dat_to_plot %>%
+        distinct(variable,dist_eucl_mean) %>%
+        ggplot(aes(x = dist_eucl_mean, y = variable)) +
+        geom_boxplot() +
+        geom_point(data = dat_to_plot %>% filter(site %in% large_n_sites),
+                   aes(color = site)) +
+        theme_minimal() +
+        theme(axis.text.y = element_blank(),
+              legend.title = element_blank()) +
+        scale_fill_squba(palette = 'diverging', discrete = FALSE) +
+        labs(x ='Euclidean Distance',
+             y = '',
+             title = paste0('Distribution of Euclidean Distances'))
+    }
 
     output <- q + t + plot_layout(ncol = 1, heights = c(5, 1))
   }
