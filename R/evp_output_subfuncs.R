@@ -376,25 +376,30 @@ evp_ms_anom_cs<-function(process_output,
       ungroup() %>%
       select(-anomaly_yn)
 
-    # clps_vals <- process_output %>%
-    #   group_by(variable) %>%
-    #   summarise(valcol = list(!!sym(comparison_col)))
+    sitesanoms <- process_output %>%
+      filter(anomaly_yn == 'outlier') %>%
+      group_by(variable) %>%
+      summarise(site_anoms = toString(site)) %>%
+      select(variable, site_anoms)
 
     tbl <- process_output %>%
       group_by(variable) %>%
       mutate(iqr_val = stats::IQR(!!sym(comparison_col))) %>%
       ungroup() %>%
       distinct(variable, mean_val, sd_val, median_val, iqr_val) %>%
-      # left_join(clps_vals) %>%
       left_join(nsite_anom) %>%
+      left_join(sitesanoms) %>%
       left_join(far_site) %>%
       left_join(close_site) %>%
+      mutate(delim = sub("^([^,]+,){5}([^,]+).*", "\\2", site_anoms),
+             site_anoms = ifelse(site_w_anom > 5,
+                                 stringr::str_replace(site_anoms, paste0(",", delim, '(.*)'), ' . . .'),
+                                 site_anoms)) %>%
+      select(-delim) %>%
       gt::gt() %>%
       tab_header('Large N Anomaly Detection Summary Table') %>%
-      # gtExtras::gt_plt_dist(column = valcol,
-      #                       type = 'boxplot', same_limit = FALSE) %>%
       cols_label(variable = 'Variable',
-                 # valcol = 'Value Distribution',
+                 site_anoms = 'Site(s) with Anomaly',
                  mean_val = 'Mean',
                  sd_val = 'Standard Deviation',
                  median_val = 'Median',
@@ -405,7 +410,7 @@ evp_ms_anom_cs<-function(process_output,
       sub_missing(missing_text = 0,
                   columns = site_w_anom) %>%
       sub_missing(missing_text = '--',
-                  columns = c(farthest_site, closest_site)) %>%
+                  columns = c(farthest_site, closest_site, site_anoms)) %>%
       fmt_number(columns = c(mean_val, median_val, sd_val, iqr_val),
                  decimals = 3) %>%
       opt_stylize(style = 2)
