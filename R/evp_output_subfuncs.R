@@ -139,6 +139,7 @@ evp_ms_exp_cs <- function(process_output,
       geom_tile_interactive() +
       geom_text(aes(label = !!sym(prop), color = colors), #size = 6,
                 show.legend = FALSE) +
+      geom_vline(xintercept = 3.5, color = 'black') +
       scale_color_manual(values = c('white', 'black')) +
       scale_fill_squba(palette = 'diverging', discrete = FALSE) +
       theme_minimal() +
@@ -845,6 +846,7 @@ evp_ms_anom_la <- function(process_output,
         theme(axis.text.y = element_blank(),
               legend.title = element_blank()) +
         scale_fill_squba(palette = 'diverging', discrete = FALSE) +
+        scale_color_squba() +
         labs(x ='Euclidean Distance',
              y = '',
              title = paste0('Distribution of Euclidean Distances'))
