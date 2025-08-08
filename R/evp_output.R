@@ -61,25 +61,33 @@ evp_output <- function(process_output,
 
     evp_output <- evp_ms_exp_cs(process_output = process_output,
                                 output_level = output_level,
-                                facet = facet)
+                                facet = facet,
+                                large_n = large_n,
+                                large_n_sites = large_n_sites)
 
   }else if(output_function == 'evp_ms_anom_cs'){
 
     evp_output <- evp_ms_anom_cs(process_output = process_output,
-                                 output_level = output_level)
+                                 output_level = output_level,
+                                 large_n = large_n,
+                                 large_n_sites = large_n_sites)
 
   }else if(output_function == 'evp_ms_exp_la'){
 
     evp_output <- evp_ms_exp_la(process_output = process_output,
                                 output_level = output_level,
                                 filter_variable = filter_variable,
-                                facet = facet)
+                                facet = facet,
+                                large_n = large_n,
+                                large_n_sites = large_n_sites)
 
   }else if(output_function == 'evp_ms_anom_la'){
 
     evp_output <- evp_ms_anom_la(process_output = process_output,
                                  output_level = output_level,
-                                 filter_variable = filter_variable)
+                                 filter_variable = filter_variable,
+                                 large_n = large_n,
+                                 large_n_sites = large_n_sites)
 
   }else(cli::cli_abort('Please enter a valid output function for this check type.'))
 
