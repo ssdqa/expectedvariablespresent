@@ -417,6 +417,9 @@ evp_ms_anom_cs<-function(process_output,
       opt_stylize(style = 2)
 
     if(!is.null(large_n_sites)){
+      dat_to_plot <- dat_to_plot %>% mutate(anomaly_yn = ifelse(anomaly_yn == 'no outlier in group',
+                                                                'not outlier', anomaly_yn))
+
       plt<-ggplot(dat_to_plot %>% filter(site %in% large_n_sites),
                   aes(x=site, y=variable, text=text, color=!!sym(comparison_col)))+
         geom_point_interactive(aes(size=mean_val,shape=anomaly_yn, tooltip = text))+
@@ -565,9 +568,6 @@ evp_ms_exp_la <- function(process_output,
     p <- summ_stats %>%
       ggplot(aes(y = !!sym(prop), x = time_start, color = site)) +
       geom_line(linewidth = 1, alpha = a, linetype = lt) +
-      geom_line(data = process_output %>% filter(variable %in% filter_variable,
-                                                 site %in% large_n_sites),
-                linewidth = 1) +
       scale_color_squba() +
       facet_wrap((facet)) +
       theme_minimal() +
@@ -575,6 +575,10 @@ evp_ms_exp_la <- function(process_output,
            color = 'Site',
            y = paste0('Proportion ', title),
            x = 'Time')
+
+    if(!is.null(large_n_sites)){p <- p + geom_line(data = process_output %>% filter(variable %in% filter_variable,
+                                                                                    site %in% large_n_sites),
+                                                   linewidth = 1)}
   }
 
   p[['metadata']] <- tibble('pkg_backend' = 'plotly',
@@ -751,7 +755,6 @@ evp_ms_anom_la <- function(process_output,
       geom_line(data=allsites, linewidth=1.1) +
       geom_smooth(se=TRUE,alpha=0.1,linewidth=0.5, formula = y ~ x) +
       theme_minimal() +
-      #theme(axis.text.x = element_text(angle = 30, vjust = 1, hjust=1)) +
       scale_color_squba() +
       labs(y = 'Proportion (Loess)',
            x = 'Time',
@@ -763,7 +766,6 @@ evp_ms_anom_la <- function(process_output,
       geom_line(data=allsites,linewidth=1.1) +
       geom_line(linewidth=0.2) +
       theme_minimal() +
-      #theme(axis.text.x = element_text(angle = 30, vjust = 1, hjust=1)) +
       scale_color_squba() +
       labs(x = 'Time',
            y = 'Proportion',
@@ -779,15 +781,10 @@ evp_ms_anom_la <- function(process_output,
       ggplot(aes(x = site, y = dist_eucl_mean, fill = mean_site_loess, tooltip = tooltip)) +
       geom_segment(aes(x = site, xend = site, y = 0, yend = dist_eucl_mean), color = 'navy') +
       geom_point_interactive(aes(fill = mean_site_loess), shape = 21, size = 4) +
-      # geom_text(aes(label = dist_eucl_mean), vjust = 2, size = 3,
-      #           show.legend = FALSE) +
       coord_radial(r.axis.inside = FALSE, rotate.angle = TRUE) +
       guides(theta = guide_axis_theta(angle = 0)) +
       theme_minimal() +
       scale_fill_squba(palette = 'diverging', discrete = FALSE) +
-      # theme(legend.position = 'bottom',
-      #       legend.text = element_text(angle = 45, vjust = 0.9, hjust = 1),
-      #       axis.text.x = element_text(face = 'bold')) +
       labs(fill = 'Avg. Proportion \n(Loess)',
            y ='Euclidean Distance',
            x = '',
@@ -807,12 +804,9 @@ evp_ms_anom_la <- function(process_output,
   }else{
     q <- ggplot(allsites, aes(x = time_start)) +
       geom_ribbon(data = iqr_dat, aes(ymin = q1, ymax = q3), alpha = 0.2) +
-      geom_line(aes(y = prop_col, color = site, group = site, text=text_raw), linewidth=1.1) +
-      geom_line(data = dat_to_plot %>% filter(site %in% large_n_sites),
-                aes(y = prop_col, color = site, group = site, text=text_raw),
-                linewidth=0.2) +
+      geom_line(aes(y = prop_col, color = site, group = site), linewidth=1.1) +
+      geom_point_interactive(aes(y = prop_col, color = site, group = site, tooltip=text_raw)) +
       theme_minimal() +
-      #theme(axis.text.x = element_text(angle = 30, vjust = 1, hjust=1)) +
       scale_color_squba() +
       labs(x = 'Time',
            y = 'Proportion',
@@ -825,8 +819,8 @@ evp_ms_anom_la <- function(process_output,
         distinct(variable, dist_eucl_mean) %>%
         ggplot(aes(x = dist_eucl_mean, y = variable)) +
         geom_boxplot() +
-        geom_point(color = 'gray',
-                   alpha = 0.75) +
+        geom_point_interactive(color = 'gray',
+                               alpha = 0.75, aes(tooltip = dist_eucl_mean)) +
         theme_minimal() +
         theme(axis.text.y = element_blank(),
               legend.title = element_blank()) +
@@ -836,12 +830,19 @@ evp_ms_anom_la <- function(process_output,
              title = paste0('Distribution of Euclidean Distances'))
 
     }else{
+
+      q <- q + geom_line(data = dat_to_plot %>% filter(site %in% large_n_sites),
+                         aes(y = prop_col, color = site, group = site),
+                         linewidth=0.2) +
+        geom_point_interactive(data = dat_to_plot %>% filter(site %in% large_n_sites),
+                               aes(y = prop_col, color = site, group = site, tooltip=text_raw))
+
       t <- dat_to_plot %>%
         distinct(variable,dist_eucl_mean) %>%
         ggplot(aes(x = dist_eucl_mean, y = variable)) +
         geom_boxplot() +
-        geom_point(data = dat_to_plot %>% filter(site %in% large_n_sites),
-                   aes(color = site)) +
+        geom_point_interactive(data = dat_to_plot %>% filter(site %in% large_n_sites),
+                               aes(color = site, tooltip = dist_eucl_mean)) +
         theme_minimal() +
         theme(axis.text.y = element_blank(),
               legend.title = element_blank()) +
@@ -851,6 +852,11 @@ evp_ms_anom_la <- function(process_output,
              y = '',
              title = paste0('Distribution of Euclidean Distances'))
     }
+
+    q[['metadata']] <- tibble('pkg_backend' = 'ggiraph',
+                              'tooltip' = TRUE)
+    t[['metadata']] <- tibble('pkg_backend' = 'ggiraph',
+                              'tooltip' = TRUE)
 
     output <- q + t + plot_layout(ncol = 1, heights = c(5, 1))
   }
