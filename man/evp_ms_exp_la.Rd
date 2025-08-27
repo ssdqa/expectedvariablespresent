@@ -6,7 +6,14 @@
 \item Multi Site, Exploratory, Longitudinal*
 }}
 \usage{
-evp_ms_exp_la(process_output, output_level, filter_variable, facet = NULL)
+evp_ms_exp_la(
+  process_output,
+  output_level,
+  filter_variable,
+  large_n = FALSE,
+  large_n_sites = NULL,
+  facet = NULL
+)
 }
 \arguments{
 \item{process_output}{the output provided by the \code{evp_process} function}
@@ -14,6 +21,11 @@ evp_ms_exp_la(process_output, output_level, filter_variable, facet = NULL)
 \item{output_level}{the level of output to be displayed: \code{patient} or \code{row}}
 
 \item{filter_variable}{the single variable the output should display}
+
+\item{large_n}{a boolean indicating whether the large N visualization, intended for a high
+volume of sites, should be used; defaults to FALSE}
+
+\item{large_n_sites}{a vector of site names that can optionally generate a filtered visualization}
 
 \item{facet}{columns the user would like to facet by}
 }
