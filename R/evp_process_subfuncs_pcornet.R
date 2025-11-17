@@ -19,6 +19,7 @@
 #' @return dataframe with patient/row counts and proportions that are computed per group defined in
 #'         grouped_list, and if time = TRUE, for each time period defined in compute_fot
 #'
+#' @keywords internal
 #'
 compute_evp_pcnt <- function(cohort,
                              grouped_list,
@@ -130,6 +131,7 @@ compute_evp_pcnt <- function(cohort,
 #' @return one dataframe with the jaccard similarity index for each concept group provided
 #'         in the concept file
 #'
+#' @keywords internal
 #'
 compute_evp_ssanom_pcnt <- function(cohort,
                                     grouped_list,

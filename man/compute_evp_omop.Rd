@@ -36,3 +36,4 @@ grouped_list, and if time = TRUE, for each time period defined in compute_fot
 \description{
 Compute variable distribution (OMOP)
 }
+\keyword{internal}

@@ -22,6 +22,8 @@
 #' @importFrom purrr set_names
 #' @importFrom purrr reduce
 #'
+#' @keywords internal
+#'
 compute_evp_omop <- function(cohort,
                              grouped_list,
                              time = FALSE,
@@ -121,6 +123,7 @@ compute_evp_omop <- function(cohort,
 #' @return one dataframe with the jaccard similarity index for each concept group provided
 #'         in the concept file
 #'
+#' @keywords internal
 #'
 compute_evp_ssanom_omop <- function(cohort,
                                     grouped_list,

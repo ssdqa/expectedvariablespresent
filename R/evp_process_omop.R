@@ -44,6 +44,8 @@
 #' @import squba.gen
 #' @importFrom stringr str_wrap
 #'
+#' @keywords internal
+#'
 evp_process_omop <- function(cohort,
                              evp_variable_file = expectedvariablespresent::evp_variable_file_omop,
                              multi_or_single_site = 'single',

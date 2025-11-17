@@ -43,6 +43,7 @@
 #'         this output should then be used in the `evp_output` function to generate an appropriate
 #'         visualization
 #'
+#' @keywords internal
 #'
 evp_process_pcornet <- function(cohort,
                                 evp_variable_file = expectedvariablespresent::evp_variable_file_pcornet,

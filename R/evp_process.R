@@ -8,49 +8,95 @@
 #' Results can optionally be stratified by site, age group, and/or time. This function is compatible with
 #' both the OMOP and the PCORnet CDMs based on the user's selection.
 #'
-#' @param cohort *tabular input* | A dataframe with the cohort of patients for your study. Should include the columns:
-#' - `person_id` / `patid` | *integer* / *character*
-#' - `start_date` | *date*
-#' - `end_date` | *date*
-#' - `site` | *character*
-#' @param omop_or_pcornet *string* | Option to run the function using the OMOP or PCORnet CDM as the default CDM
-#' - `omop`: run the [evp_process_omop()] function against an OMOP CDM instance
-#' - `pcornet`: run the [evp_process_pcornet()] function against a PCORnet CDM instance
-#' @param evp_variable_file *tabular input* | CSV file with information about each of the variables that should be
-#' examined in the function. contains the following columns:
-#' - `variable` | *character* | a label for the variable captured by the associated codeset
-#' - `default_tbl` | *character* | CDM table where data related to the codeset is found
-#' - `concept_field` | *character* | concept_id field with codes from the associated codeset
-#' - `date_field` | *character* | a date field in the `default_tbl` that should be used for over time analyses
-#' - `vocabulary_field` | *character* | PCORNET ONLY; field in the `default_tbl` that defines the vocabulary type of the concept (i.e. dx_type)
-#' if this field is used, the codeset should have a `vocabulary_id` column that defines the appropriate vocabularies for each concept
-#' - `codeset_name` | *character* | the name of the codeset file; DO NOT include the file extension
-#' - `filter_logic` | *character* | a string indicating filter logic that should be applied to achieve the desired variable; optional
-#' @param multi_or_single_site *string* | Option to run the function on a single vs multiple sites
-#' - `single`: run the function for a single site
-#' - `multi`: run the function for multiple sites
-#' @param anomaly_or_exploratory *string* | Option to conduct an exploratory or anomaly detection analysis. Exploratory analyses give a high
-#' level summary of the data to examine the fact representation within the cohort. Anomaly detection
-#' analyses are specialized to identify outliers within the cohort.
-#' @param output_level *string* | the level of output to use for an euclidean distance computation, exclusive to `ms_anom_la`;
-#' either `patient` or `row` -- defaults to `row`
-#' @param age_groups *tabular input* | If you would like to stratify the results by age group,  create a table or CSV file with the following
-#'                   columns and include it as the `age_groups` function parameter:
-#' - `min_age` | *integer* | the minimum age for the group (i.e. 10)
-#' - `max_age` | *integer* | the maximum age for the group (i.e. 20)
-#' - `group` | *character* | a string label for the group (i.e. 10-20, Young Adult, etc.)
+#' @param cohort *tabular input* || **required**
 #'
-#' If you would *not* like to stratify by age group, leave the argument as NULL
-#' @param p_value *numeric* | the p value to be used as a threshold in the multi-site anomaly detection analysis
-#' @param time *boolean* | a logical that tells the function whether you would like to look at the output over time
-#' @param time_span *vector - length 2* | when time = TRUE, this argument defines the start and end dates for the time period of interest. should be
-#'                  formatted as c(start date, end date) in yyyy-mm-dd date format
-#' @param time_period *string* | when time = TRUE, this argument defines the distance between dates within the specified time period. defaults
-#'                    to `year`, but other time periods such as `month` or `week` are also acceptable
+#'   The cohort to be used for data quality testing. This table should contain,
+#'   at minimum:
+#'   - `site` | *character* | the name(s) of institutions included in your cohort
+#'   - `person_id` / `patid` | *integer* / *character* | the patient identifier
+#'   - `start_date` | *date* | the start of the cohort period
+#'   - `end_date` | *date* | the end of the cohort period
 #'
-#' @return a dataframe with patient/row counts & proportions for each concept set listed in `evp_variable_file`.
-#'         this output should then be used in the `evp_output` function to generate an appropriate
-#'         visualization
+#'   Note that the start and end dates included in this table will be used to
+#'   limit the search window for the analyses in this module.
+#'
+#' @param omop_or_pcornet *string* || **required**
+#'
+#'   A string, either `omop` or `pcornet`, indicating the CDM format of the data
+#'
+#'    - `omop`: run the [evp_process_omop()] function against an OMOP CDM instance
+#'    - `pcornet`: run the [evp_process_pcornet()] function against a PCORnet CDM instance
+#'
+#' @param evp_variable_file *tabular input* || **required**
+#'
+#'   A table with information about each of the variables that should be examined
+#'   in the analysis. This table should contain the following columns:
+#'   - `variable` | *character* | a string label for the variable captured by the associated codeset
+#'   - `domain_tbl` | *character* | the CDM table where the variable is found
+#'   - `concept_field` | *character* | the string name of the field in the domain table where the concepts are located
+#'   - `date_field` | *character* | the name of the field in the domain table with the date that should be used for temporal filtering
+#'   - `vocabulary_field` | *character* | for PCORnet applications, the name of the field in the domain table with a vocabulary identifier to differentiate concepts from one another (ex: dx_type); can be set to NA for OMOP applications
+#'   - `codeset_name` | *character* | the name of the codeset that defines the variable of interest
+#'   - `filter_logic` | *character* | logic to be applied to the domain_tbl in order to achieve the definition of interest; should be written as if you were applying it in a dplyr::filter command in R
+#'
+#'   To see an example of the structure of this file, please see `?expectedvariablespresent::evp_variable_file_omop` or
+#'   `?expectedvariablespresent::evp_variable_file_pcornet`
+#'
+#' @param multi_or_single_site *string* || defaults to `single`
+#'
+#'   A string, either `single` or `multi`, indicating whether a single-site or
+#'   multi-site analysis should be executed
+#'
+#' @param anomaly_or_exploratory *string* || defaults to `exploratory`
+#'
+#'   A string, either `anomaly` or `exploratory`, indicating what type of results
+#'   should be produced.
+#'
+#'   Exploratory analyses give a high level summary of the data to examine the
+#'   fact representation within the cohort. Anomaly detection analyses are
+#'   specialized to identify outliers within the cohort.
+#'
+#' @param output_level *string* || defaults to `patient`
+#'
+#'   A string indicating the analysis level to use as the basis for the
+#'   Multi Site, Anomaly Detection computations
+#'
+#'   Acceptable values are either `patient` or `row`
+#'
+#' @param age_groups *tabular input* || defaults to `NULL`
+#'
+#'   If you would like to stratify the results by age group, create a table or
+#'   CSV file with the following columns and use it as input to this parameter:
+#'
+#'   - `min_age` | *integer* | the minimum age for the group (i.e. 10)
+#'   - `max_age` | *integer* | the maximum age for the group (i.e. 20)
+#'   - `group` | *character* | a string label for the group (i.e. 10-20, Young Adult, etc.)
+#'
+#'   If you would *not* like to stratify by age group, leave as `NULL`
+#'
+#' @param p_value *numeric* || defaults to `0.9`
+#'
+#'   The p value to be used as a threshold in the Multi-Site,
+#'   Anomaly Detection, Cross-Sectional analysis
+#'
+#' @param time *boolean* || defaults to `FALSE`
+#'
+#'   A boolean to indicate whether to execute a longitudinal analysis
+#'
+#' @param time_span *vector - length 2* || defaults to `c('2012-01-01', '2020-01-01')`
+#'
+#'   A vector indicating the lower and upper bounds of the time series for longitudinal analyses
+#'
+#' @param time_period *string* || defaults to `year`
+#'
+#'   A string indicating the distance between dates within the specified time_span.
+#'   Defaults to `year`, but other time periods such as `month` or `week` are
+#'   also acceptable
+#'
+#' @return This function will return a dataframe summarizing the
+#'         distribution of each user-defined variable. For a
+#'         more detailed description of output specific to each check type,
+#'         see the PEDSpace metadata repository
 #'
 #' @example inst/example-evp_process_output.R
 #'
@@ -59,11 +105,11 @@
 #' @export
 #'
 evp_process <- function(cohort,
-                        omop_or_pcornet = 'omop',
+                        omop_or_pcornet,
                         evp_variable_file,
                         multi_or_single_site = 'single',
                         anomaly_or_exploratory='exploratory',
-                        output_level = 'row',
+                        output_level = 'patient',
                         age_groups = NULL,
                         p_value = 0.9,
                         time = FALSE,

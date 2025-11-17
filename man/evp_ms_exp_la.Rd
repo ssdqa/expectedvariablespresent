@@ -38,3 +38,4 @@ a line graph displaying the proportion of patients/rows for each variable
 \item Multi Site, Exploratory, Longitudinal*
 }
 }
+\keyword{internal}

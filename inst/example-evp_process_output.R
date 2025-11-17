@@ -7,11 +7,10 @@ conn <- mk_testdb_omop()
 
 #' Establish connection to database and generate internal configurations
 initialize_dq_session(session_name = 'evp_process_test',
-                      working_directory = getwd(),
+                      working_directory = my_directory,
                       db_conn = conn,
                       is_json = FALSE,
-                      file_subdirectory = system.file('extdata',
-                                        package = 'expectedvariablespresent'),
+                      file_subdirectory = my_file_folder,
                       cdm_schema = NA)
 
 #' Build mock study cohort
@@ -29,7 +28,8 @@ evp_process_example <- evp_process(cohort = cohort,
                                    anomaly_or_exploratory = 'exploratory',
                                    time = FALSE,
                                    omop_or_pcornet = 'omop',
-                                   evp_variable_file = evp_variable_file_omop)
+                                   evp_variable_file = evp_variable_file_omop) %>%
+  suppressMessages()
 
 evp_process_example
 

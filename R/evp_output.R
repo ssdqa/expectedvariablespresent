@@ -6,23 +6,52 @@
 #' be adjusted by the user after the graph has been output using `+ theme()`. Most graphs can
 #' also be made interactive using `make_interactive_squba()`
 #'
-#' @param process_output *tabular input* | the output of the `evp_process` function
-#' @param output_level *string* | the type of counts the output should summarise -- either `patient` or `row`
-#' @param filter_variable *string* | for `ms_anom_la`, `ms_exp_la`, `ss_anom_la`, the single variable that
-#' should be displayed in the output; can be any of the variables listed in the `evp_process` output
-#' @param large_n *boolean* | for multi site analyses, a boolean indicating whether the large N visualization, intended for a high
-#'                volume of sites, should be used; defaults to FALSE
-#' @param large_n_sites *vector* | when large_n is TRUE, a vector of site names that can optionally generate a filtered visualization
+#' @param process_output *tabular input* || **required**
 #'
-#' @return a graph to visualize the results from `evp_process` based on the parameters provided; see documentation
-#'         for individual subfunctions for details on specific output
+#'   The tabular output produced by `evp_process`
+#'
+#' @param output_level *string* || defaults to `patient`
+#'
+#'   A string indicating the analysis level that should be reflected in the plot. All checks
+#'   utilize this parameter EXCEPT `Single Site, Anomaly Detection, Cross-Sectional`, which
+#'   executes a Jaccard index using only patient counts
+#'
+#' @param filter_variable *string or vector* || defaults to `NULL`
+#'
+#'   A string or vector with variable names that should be the focus of the analysis.
+#'   Only a single value is accepted for the following checks:
+#'   - `Multi Site, Exploratory, Longitudinal` (non-year time period)
+#'   - `Multi Site, Anomaly Detection, Longitudinal`
+#'   - `Single Site, Anomaly Detection, Longitudinal`
+#'
+#'   Multiple values (up to 3) are accepted for:
+#'   - `Multi Site, Exploratory, Longitudinal` (year time period)
+#'
+#' @param large_n *boolean* || defaults to `FALSE`
+#'
+#'   For Multi-Site analyses, a boolean indicating whether the large N
+#'   visualization, intended for a high volume of sites, should be used. This
+#'   visualization will produce high level summaries across all sites, with an
+#'   option to add specific site comparators via the `large_n_sites` parameter.
+#'
+#' @param large_n_sites *vector* || defaults to `NULL`
+#'
+#'   When `large_n = TRUE`, a vector of site names that can add site-level information
+#'   to the plot for comparison across the high level summary information.
+#'
+#' @return This function will produce a graph to visualize the results
+#'         from `evp_process` based on the parameters provided. The default
+#'         output is typically a static ggplot or gt object, but interactive
+#'         elements can be activated by passing the plot through `make_interactive_squba`.
+#'         For a more detailed description of output specific to each check type,
+#'         see the PEDSpace metadata repository
 #'
 #' @example inst/example-evp_process_output.R
 #'
 #' @export
 #'
 evp_output <- function(process_output,
-                       output_level,
+                       output_level = 'patient',
                        filter_variable = NULL,
                        large_n = FALSE,
                        large_n_sites = NULL

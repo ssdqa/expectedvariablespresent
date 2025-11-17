@@ -30,6 +30,7 @@ NULL
 #' @return a bar graph displaying the proportion of patients/rows that meet criteria for each
 #'         of the variables found in process_output
 #'
+#' @keywords internal
 #'
 evp_ss_exp_cs <- function(process_output,
                           output_level,
@@ -82,7 +83,8 @@ evp_ss_exp_cs <- function(process_output,
 #' @return a heat map displaying the proportion of patients/rows that meet criteria for each
 #'         of the variables found in process_output at each of site
 #'
-
+#' @keywords internal
+#'
 evp_ms_exp_cs <- function(process_output,
                           output_level,
                           large_n = FALSE,
@@ -164,6 +166,7 @@ evp_ms_exp_cs <- function(process_output,
 #' @return a heat map displaying the Jaccard similarity index between each of the variables
 #'         any variables without a relationship and any self-to-self relationships are dropped
 #'
+#' @keywords internal
 #'
 evp_ss_anom_cs <- function(process_output,
                            facet = NULL){
@@ -226,6 +229,8 @@ evp_ss_anom_cs <- function(process_output,
 #'         if there were no groups eligible for analysis, a heat map showing the proportion
 #'         and a dot plot showing each site's average standard deviation away from the mean
 #'         proportion is returned instead
+#'
+#' @keywords internal
 #'
 evp_ms_anom_cs<-function(process_output,
                          output_level,
@@ -461,6 +466,8 @@ evp_ms_anom_cs<-function(process_output,
 #' @return a line graph displaying the proportion of patients/rows for each variable
 #'         over the user-specified time period
 #'
+#' @keywords internal
+#'
 evp_ss_exp_la <- function(process_output,
                           output_level,
                           facet = NULL){
@@ -506,6 +513,8 @@ evp_ss_exp_la <- function(process_output,
 #'
 #' @return a line graph displaying the proportion of patients/rows for each variable
 #'         & site over the user-specified time period.
+#'
+#' @keywords internal
 #'
 evp_ms_exp_la <- function(process_output,
                           output_level,
@@ -601,6 +610,8 @@ evp_ms_exp_la <- function(process_output,
 #'         if analysis was executed by month or smaller, an STL regression is
 #'         conducted and outliers are marked with red dots. the graphs representing
 #'         the data removed in the regression are also returned
+#'
+#' @keywords internal
 #'
 evp_ss_anom_la <- function(process_output,
                            output_level,
@@ -707,7 +718,8 @@ evp_ss_anom_la <- function(process_output,
 #'
 #' THIS GRAPH SHOWS ONLY ONE VARIABLE AT A TIME!
 #'
-
+#' @keywords internal
+#'
 evp_ms_anom_la <- function(process_output,
                            output_level,
                            filter_variable,
