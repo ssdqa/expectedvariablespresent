@@ -13,6 +13,7 @@ Useful links:
 \itemize{
   \item \url{https://github.com/ssdqa/expectedvariablespresent}
   \item \url{https://pedsnet.org/metadata/handle/20.500.14642/27}
+  \item \url{https://ssdqa.github.io/expectedvariablespresent/}
   \item Report bugs at \url{https://github.com/ssdqa/expectedvariablespresent/issues}
 }
 
