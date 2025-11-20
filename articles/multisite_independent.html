@@ -79,6 +79,34 @@ executed against data that are all stored in the same place. However,
 there may be some instances where the data associated with each site is
 stored in independent locations. This vignette outlines how the
 multi-site analysis can be executed in these instances.</p>
+<p>After following the instructions to reproduce the analysis, you will
+also need to change the <code>output_function</code> column to tell the
+<code>evp_output</code> function which check you executed. Reference the
+table below for the labels that are associated with each check:</p>
+<table class="table">
+<thead><tr class="header">
+<th align="left">Check Type</th>
+<th align="left">output_function</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">Multi Site, Exploratory, Cross-Sectional</td>
+<td align="left">evp_ms_exp_cs</td>
+</tr>
+<tr class="even">
+<td align="left">Multi Site, Exploratory, Longitudinal</td>
+<td align="left">evp_ms_exp_la</td>
+</tr>
+<tr class="odd">
+<td align="left">Multi Site, Anomaly Detection, Cross-Sectional</td>
+<td align="left">evp_ms_anom_cs</td>
+</tr>
+<tr class="even">
+<td align="left">Multi Site, Anomaly Detection, Longitudinal</td>
+<td align="left">evp_ms_anom_la</td>
+</tr>
+</tbody>
+</table>
 <div class="section level2">
 <h2 id="multi-site-exploratory-analysis">Multi-Site Exploratory Analysis<a class="anchor" aria-label="anchor" href="#multi-site-exploratory-analysis"></a>
 </h2>
@@ -98,7 +126,8 @@ against each data source.</p>
 <p>Then, combine these results into a single table with the different
 sites delineated in the <code>site</code> column.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>my_final_results <span class="ot">&lt;-</span> my_table1 <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">union</span>(my_table2) ... <span class="sc">%&gt;%</span></span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">union</span>(my_table_n)</span></code></pre></div>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">union</span>(my_table_n) <span class="sc">%&gt;%</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">output_function =</span> <span class="st">'{see table above}'</span>)</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="multi-site-anomaly-detection-analysis">Multi-Site Anomaly Detection Analysis<a class="anchor" aria-label="anchor" href="#multi-site-anomaly-detection-analysis"></a>
@@ -132,7 +161,8 @@ be selected by the user.</p>
 <span>                            tail_input <span class="op">=</span> <span class="st">'both'</span>,</span>
 <span>                            p_input <span class="op">=</span> <span class="va">p_value</span>,</span>
 <span>                            column_analysis <span class="op">=</span> <span class="va">analysis_level</span>,</span>
-<span>                            column_variable <span class="op">=</span> <span class="st">'variable'</span><span class="op">)</span></span></code></pre></div>
+<span>                            column_variable <span class="op">=</span> <span class="st">'variable'</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>output_function <span class="op">=</span> <span class="st">'{see table above}'</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="longitudinal">Longitudinal<a class="anchor" aria-label="anchor" href="#longitudinal"></a>
@@ -148,7 +178,8 @@ set it to <code>prop_row_variable</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/squba.gen/man/ms_anom_euclidean.html" class="external-link">ms_anom_euclidean</a></span><span class="op">(</span>fot_input_tbl <span class="op">=</span> <span class="va">my_table</span>,</span>
 <span>                        grp_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'site'</span>, <span class="st">'variable'</span><span class="op">)</span>,</span>
-<span>                        var_col <span class="op">=</span> <span class="va">analysis_level</span><span class="op">)</span></span></code></pre></div>
+<span>                        var_col <span class="op">=</span> <span class="va">analysis_level</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>output_function <span class="op">=</span> <span class="st">'{see table above}'</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

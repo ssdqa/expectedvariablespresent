@@ -6,6 +6,18 @@ there may be some instances where the data associated with each site is
 stored in independent locations. This vignette outlines how the
 multi-site analysis can be executed in these instances.
 
+After following the instructions to reproduce the analysis, you will
+also need to change the `output_function` column to tell the
+`evp_output` function which check you executed. Reference the table
+below for the labels that are associated with each check:
+
+| Check Type                                     | output_function |
+|:-----------------------------------------------|:----------------|
+| Multi Site, Exploratory, Cross-Sectional       | evp_ms_exp_cs   |
+| Multi Site, Exploratory, Longitudinal          | evp_ms_exp_la   |
+| Multi Site, Anomaly Detection, Cross-Sectional | evp_ms_anom_cs  |
+| Multi Site, Anomaly Detection, Longitudinal    | evp_ms_anom_la  |
+
 ## Multi-Site Exploratory Analysis
 
 The process for the exploratory analysis is the same for both the
@@ -29,7 +41,8 @@ delineated in the `site` column.
 
 ``` r
 my_final_results <- my_table1 %>% dplyr::union(my_table2) ... %>%
-  dplyr::union(my_table_n)
+  dplyr::union(my_table_n) %>%
+  dplyr::mutate(output_function = '{see table above}')
 ```
 
 ## Multi-Site Anomaly Detection Analysis
@@ -63,7 +76,8 @@ df_final <- detect_outliers(df_tbl = df_start,
                             tail_input = 'both',
                             p_input = p_value,
                             column_analysis = analysis_level,
-                            column_variable = 'variable')
+                            column_variable = 'variable') %>%
+  dplyr::mutate(output_function = '{see table above}')
 ```
 
 ### Longitudinal
@@ -79,5 +93,6 @@ would prefer to use row counts, set it to `prop_row_variable`.
 ``` r
 df <- ms_anom_euclidean(fot_input_tbl = my_table,
                         grp_vars = c('site', 'variable'),
-                        var_col = analysis_level)
+                        var_col = analysis_level) %>%
+  dplyr::mutate(output_function = '{see table above}')
 ```
