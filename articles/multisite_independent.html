@@ -151,13 +151,13 @@ set it to <code>prop_row_variable</code>. The <code>p_value</code> can
 be selected by the user.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># First execute the compute_dist_anomalies function</span></span>
-<span><span class="va">df_start</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/squba.gen/man/compute_dist_anomalies.html" class="external-link">compute_dist_anomalies</a></span><span class="op">(</span>df_tbl <span class="op">=</span> <span class="va">my_table</span>,</span>
+<span><span class="va">df_start</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ssdqa.github.io/squba.gen/reference/compute_dist_anomalies.html" class="external-link">compute_dist_anomalies</a></span><span class="op">(</span>df_tbl <span class="op">=</span> <span class="va">my_table</span>,</span>
 <span>                                   grp_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'variable'</span><span class="op">)</span>,</span>
 <span>                                   var_col <span class="op">=</span> <span class="va">analysis_level</span>,</span>
 <span>                                   denom_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'variable'</span>, <span class="st">'total_pt_ct'</span>, <span class="st">'total_row_ct'</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Then, use that output as input for the detect_outliers function</span></span>
-<span><span class="va">df_final</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/squba.gen/man/detect_outliers.html" class="external-link">detect_outliers</a></span><span class="op">(</span>df_tbl <span class="op">=</span> <span class="va">df_start</span>,</span>
+<span><span class="va">df_final</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ssdqa.github.io/squba.gen/reference/detect_outliers.html" class="external-link">detect_outliers</a></span><span class="op">(</span>df_tbl <span class="op">=</span> <span class="va">df_start</span>,</span>
 <span>                            tail_input <span class="op">=</span> <span class="st">'both'</span>,</span>
 <span>                            p_input <span class="op">=</span> <span class="va">p_value</span>,</span>
 <span>                            column_analysis <span class="op">=</span> <span class="va">analysis_level</span>,</span>
@@ -176,7 +176,7 @@ counts, <code>analysis_level</code> should be set to
 <code>prop_pt_variable</code>. If you would prefer to use row counts,
 set it to <code>prop_row_variable</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/squba.gen/man/ms_anom_euclidean.html" class="external-link">ms_anom_euclidean</a></span><span class="op">(</span>fot_input_tbl <span class="op">=</span> <span class="va">my_table</span>,</span>
+<code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ssdqa.github.io/squba.gen/reference/ms_anom_euclidean.html" class="external-link">ms_anom_euclidean</a></span><span class="op">(</span>fot_input_tbl <span class="op">=</span> <span class="va">my_table</span>,</span>
 <span>                        grp_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'site'</span>, <span class="st">'variable'</span><span class="op">)</span>,</span>
 <span>                        var_col <span class="op">=</span> <span class="va">analysis_level</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>output_function <span class="op">=</span> <span class="st">'{see table above}'</span><span class="op">)</span></span></code></pre></div>
