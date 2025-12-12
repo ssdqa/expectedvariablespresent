@@ -136,8 +136,17 @@ evp_ms_exp_cs <- function(process_output,
              tooltip = paste0('Site: ', site,
                               '\nProportion ', title, ': ', !!sym(prop)))
 
-    plot <- ggplot(summ_stats, aes(x = site, y = variable,
-                                   fill = !!sym(prop), tooltip = tooltip)) +
+    sts <- summ_stats %>% filter(!site %in% c('All Site Median', 'All Site Q1',
+                                              'All Site Q3')) %>%
+      distinct(site) %>% pull()
+
+    plot <- ggplot(summ_stats %>%
+                     mutate(site = factor(site, levels = c('All Site Q1',
+                                                           'All Site Median',
+                                                           'All Site Q3',
+                                                           sts))),
+                   aes(x = site, y = variable,
+                       fill = !!sym(prop), tooltip = tooltip)) +
       geom_tile_interactive() +
       geom_text(aes(label = !!sym(prop), color = colors), #size = 6,
                 show.legend = FALSE) +
