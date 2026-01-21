@@ -49,10 +49,16 @@ compute_evp_pcnt <- function(cohort,
         group_by(time_start, time_increment, .add = TRUE)
     }
 
-    total_pts <- domain_tbl %>%
-      summarise(total_pt_ct = n_distinct(patid),
-                total_row_ct = n()) %>%
+    total_pts <- cohort %>%
+      summarise(total_pt_ct = n_distinct(person_id)) %>%
       collect()
+
+    total_rows <- domain_tbl %>%
+      summarise(total_row_ct = n()) %>%
+      collect()
+
+    totals <- total_rows %>%
+      left_join(total_pts)
 
     join_cols <- purrr::set_names('concept_code', evp_list[[i]]$concept_field)
 
@@ -82,17 +88,17 @@ compute_evp_pcnt <- function(cohort,
       if(!time){
       fact_pts <- tibble('variable_pt_ct' = 0,
                          'variable_row_ct' = 0,
-                         'site' = total_pts$site)
+                         'site' = totals$site)
       }else{
         fact_pts <- tibble('variable_pt_ct' = 0,
                            'variable_row_ct' = 0,
-                           'site' = total_pts$site,
-                           'time_start' = total_pts$time_start,
-                           'time_increment' = total_pts$time_increment)
+                           'site' = totals$site,
+                           'time_start' = totals$time_start,
+                           'time_increment' = totals$time_increment)
       }
     }
 
-    final_tbl <- total_pts %>%
+    final_tbl <- totals %>%
       left_join(fact_pts) %>%
       mutate(prop_pt_variable = round(as.numeric(variable_pt_ct/total_pt_ct), 3),
              prop_row_variable = round(as.numeric(variable_row_ct/total_row_ct), 3),
