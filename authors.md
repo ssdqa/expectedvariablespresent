@@ -17,7 +17,7 @@
 Source:
 [`DESCRIPTION`](https://github.com/ssdqa/expectedvariablespresent/blob/main/DESCRIPTION)
 
-Razzaghi H, Wieand K, Dickinson K, Bailey C (2025).
+Razzaghi H, Wieand K, Dickinson K, Bailey C (2026).
 *expectedvariablespresent: Evaluate Distribution of Expected Study
 Variables*. R package version 0.0.0.9000,
 <https://github.com/ssdqa/expectedvariablespresent>.
@@ -25,7 +25,7 @@ Variables*. R package version 0.0.0.9000,
     @Manual{,
       title = {expectedvariablespresent: Evaluate Distribution of Expected Study Variables},
       author = {Hanieh Razzaghi and Kaleigh Wieand and Kimberley Dickinson and Charles Bailey},
-      year = {2025},
+      year = {2026},
       note = {R package version 0.0.0.9000},
       url = {https://github.com/ssdqa/expectedvariablespresent},
     }
