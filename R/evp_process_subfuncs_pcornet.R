@@ -50,7 +50,7 @@ compute_evp_pcnt <- function(cohort,
     }
 
     total_pts <- cohort %>%
-      summarise(total_pt_ct = n_distinct(person_id)) %>%
+      summarise(total_pt_ct = n_distinct(patid)) %>%
       collect()
 
     total_rows <- domain_tbl %>%
