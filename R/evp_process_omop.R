@@ -72,7 +72,7 @@ evp_process_omop <- function(cohort,
 
   if(is.data.frame(age_groups)){grouped_list <- grouped_list %>% append('age_grp')}
 
-  site_output <- list()
+  #site_output <- list()
 
   # Prep cohort
 
@@ -81,34 +81,34 @@ evp_process_omop <- function(cohort,
     group_by(!!! syms(grouped_list))
 
   # Execute function
-  for(k in 1:length(site_list_adj)) {
+  #for(k in 1:length(site_list_adj)) {
 
-    site_list_thisrnd <- site_list_adj[[k]]
+    #site_list_thisrnd <- site_list_adj[[k]]
 
     # filters by site
-    cohort_site <- cohort_prep %>% filter(!!sym(site_col)%in%c(site_list_thisrnd))
+    #cohort_site <- cohort_prep %>% filter(!!sym(site_col)%in%c(site_list_thisrnd))
 
     if(! time) {
 
       if(multi_or_single_site == 'single' && anomaly_or_exploratory == 'anomaly'){
 
-        concept_check <- compute_evp_ssanom_omop(cohort = cohort_site,
+        concept_check <- compute_evp_ssanom_omop(cohort = cohort_prep,
                                                  grouped_list = grouped_list,
                                                  evp_variable_file = evp_variable_file)
 
       }else{
 
-        concept_check <- compute_evp_omop(cohort = cohort_site,
+        concept_check <- compute_evp_omop(cohort = cohort_prep,
                                           grouped_list = grouped_list,
                                           evp_variable_file = evp_variable_file,
                                           time = time)
       }
 
-      site_output[[k]] <- concept_check
+      #site_output[[k]] <- concept_check
 
     } else if(time){
 
-        concept_check <- compute_fot(cohort = cohort_site,
+        concept_check <- compute_fot(cohort = cohort_prep,
                                      site_col = site_col,
                                      site_list = site_list_adj,
                                      time_span = time_span,
@@ -121,14 +121,13 @@ evp_process_omop <- function(cohort,
                                                         evp_variable_file = evp_variable_file)
                                      })
 
-    site_output[[k]] <- concept_check
+    #site_output[[k]] <- concept_check
 
     }
 
-    evp_tbl <- reduce(.x=site_output,
-                      .f=dplyr::union)
+    evp_tbl <- concept_check
 
-  }
+  #}
 
   if(time == TRUE && multi_or_single_site == 'multi' && anomaly_or_exploratory == 'anomaly'){
 
