@@ -26,6 +26,9 @@ Useful links:
 
 Authors:
 
+- Kaleigh Wieand <wieandk@chop.edu>
+  ([ORCID](https://orcid.org/0009-0003-7477-2601))
+
 - Hanieh Razzaghi <razzaghih@chop.edu>
   ([ORCID](https://orcid.org/0000-0001-5001-1590))
 

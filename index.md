@@ -10,5 +10,6 @@ the co-occurrence of variables in the same patient.
 You can install the development version of this package like so:
 
 ``` r
+
 devtools::install_github('ssdqa/expectedvariablespresent')
 ```

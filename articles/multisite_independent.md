@@ -27,6 +27,7 @@ First, execute either of the **Single Site, Exploratory** analyses,
 configured appropriately for your study, against each data source.
 
 ``` r
+
 library(expectedvariablespresent)
 
 my_table <- evp_process(cohort = my_cohort,
@@ -65,6 +66,7 @@ would prefer to use row counts, set it to `prop_row_variable`. The
 `p_value` can be selected by the user.
 
 ``` r
+
 # First execute the compute_dist_anomalies function
 df_start <- compute_dist_anomalies(df_tbl = my_table,
                                    grp_vars = c('variable'),
@@ -91,6 +93,7 @@ counts, `analysis_level` should be set to `prop_pt_variable`. If you
 would prefer to use row counts, set it to `prop_row_variable`.
 
 ``` r
+
 df <- ms_anom_euclidean(fot_input_tbl = my_table,
                         grp_vars = c('site', 'variable'),
                         var_col = analysis_level) %>%
