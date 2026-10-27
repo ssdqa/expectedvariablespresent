@@ -23,6 +23,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Kaleigh Wieand \email{wieandk@chop.edu} (\href{https://orcid.org/0009-0003-7477-2601}{ORCID})
   \item Hanieh Razzaghi \email{razzaghih@chop.edu} (\href{https://orcid.org/0000-0001-5001-1590}{ORCID})
   \item Kimberley Dickinson \email{dickinsokl@chop.edu} (\href{https://orcid.org/0000-0001-9523-056X}{ORCID})
   \item Charles Bailey \email{baileyc@chop.edu} (\href{https://orcid.org/0000-0002-8967-0662}{ORCID})

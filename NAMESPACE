@@ -12,21 +12,29 @@ import(squba.gen)
 import(tidyr)
 importFrom(grDevices,colors)
 importFrom(graphics,text)
-importFrom(gt,cols_label)
-importFrom(gt,fmt_number)
-importFrom(gt,gt)
-importFrom(gt,opt_stylize)
-importFrom(gt,sub_missing)
-importFrom(gt,tab_header)
+importFrom(gt,
+  cols_label,
+  fmt_number,
+  gt,
+  opt_stylize,
+  sub_missing,
+  tab_header
+)
 importFrom(magrittr,"%>%")
 importFrom(patchwork,plot_layout)
 importFrom(plotly,layout)
-importFrom(purrr,reduce)
-importFrom(purrr,set_names)
+importFrom(purrr,
+  reduce,
+  set_names
+)
 importFrom(qicharts2,qic)
 importFrom(rlang,":=")
-importFrom(stats,median)
-importFrom(stats,quantile)
+importFrom(stats,
+  median,
+  quantile
+)
 importFrom(stringr,str_wrap)
-importFrom(timetk,plot_anomalies)
-importFrom(timetk,plot_anomalies_decomp)
+importFrom(timetk,
+  plot_anomalies,
+  plot_anomalies_decomp
+)

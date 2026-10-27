@@ -157,7 +157,7 @@ compute_evp_ssanom_omop <- function(cohort,
                all_of(group_vars(cohort)),
                variable) %>%
         group_by(person_id, variable, .add = TRUE) %>%
-        summarise(ct = n())
+        summarise(ct = n()) %>% collect()
 
     }else{
       domain_tbl <- cdm_tbl(evp_list[[i]]$domain_tbl) %>%
@@ -172,7 +172,7 @@ compute_evp_ssanom_omop <- function(cohort,
                all_of(group_vars(cohort)),
                variable) %>%
         group_by(person_id, variable, .add = TRUE) %>%
-        summarise(ct = n())
+        summarise(ct = n()) %>% collect()
     }
 
     result[[i]] <- domain_tbl
@@ -181,7 +181,7 @@ compute_evp_ssanom_omop <- function(cohort,
 
   domain_reduce <- purrr::reduce(.x = result,
                                  .f = dplyr::union) %>%
-    collect() %>%
+    # collect() %>%
     unite(facet_col, !!!syms(grouped_list), sep = '\n')
 
   facet_list <- group_split(domain_reduce %>% group_by(facet_col))
